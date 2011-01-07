@@ -16,14 +16,19 @@ class Debug
 
     	echo '<pre>';
         var_dump($var);
-        if (is_object($var))
-            get_class_methods($object);
     	echo '</pre>';
+        if (is_object($var))
+        {
+            $var = get_class_methods($var);
+            sort($var);
+            var_dump($var);
+        }
     	if($exit)
+        {
     		exit;
-
+        }
     }
-	
+
 	/**
 	 * Zwraca metody danego obiektu
 	 * @param mixed $object
@@ -33,13 +38,15 @@ class Debug
     {
 		if (!is_object($object) && !is_string($object))
 		{
-			exit("Zmienna nie jest obiektem");
+            throw new Exception("Zmienna nie jest obiektem");
 		}
-    	echo '<pre>';
-        get_class_methods($object);
-    	echo '</pre>';
-    	if($exit)
+        $object = get_class_methods($object);
+        sort($object);
+        var_dump($object);
+        if($exit)
+        {
     		exit;
+        }
 
     }
 
