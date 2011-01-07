@@ -32,8 +32,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 
         $front = Zend_Controller_Front::getInstance();
-        $front->setDefaultModule('frontend');
         $front->registerPlugin($layoutModulePlugin);
+        
 //        var_dump($front->getModuleDirectory('frontend'));
 //        exit();
     }
