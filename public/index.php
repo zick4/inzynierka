@@ -11,6 +11,7 @@ defined('APPLICATION_ENV')
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
     realpath(APPLICATION_PATH . '/../library'),
+    APPLICATION_PATH . '/modules/admin/models' ,
     get_include_path(),
 )));
 
@@ -18,13 +19,12 @@ set_include_path(implode(PATH_SEPARATOR, array(
 require_once 'Zend/Loader/Autoloader.php';
 
 $autoloader = Zend_Loader_Autoloader::getInstance();
-$autoloader->registerNamespace('App_');
+$autoloader->setFallbackAutoloader(true);
 
 // Create application, bootstrap, and run
 $application = new Zend_Application(
     APPLICATION_ENV,
     APPLICATION_PATH . '/configs/application.ini'
 );
-
 $application->bootstrap()
             ->run();
