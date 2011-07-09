@@ -1,0 +1,10 @@
+User:
+  columns:
+    id:
+      type: integer
+      primary: true
+    username:
+      type: string(255)
+      default: default username
+    password:
+      type: string(255)
