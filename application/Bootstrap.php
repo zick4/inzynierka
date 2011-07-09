@@ -21,6 +21,15 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $front->registerPlugin($layoutModulePlugin);
     }
 
+    protected function _initView()
+    {
+        $this->bootstrap("layout");
+        $layout = $this->getResource("layout");
+        $view = $layout->getView();
+        $view->headMeta()->appendHttpEquiv('Content-Type','text/html; charset=UTF-8');
+        $view->headMeta()->appendHttpEquiv('Content-Language','pl-PL');
+    }
+
     protected function _initForm()
     {
         Zend_Registry::set('config_forms', new Zend_Config_Ini(APPLICATION_PATH . "/configs/forms.ini"));

@@ -1,13 +1,14 @@
 <?php echo $this->doctype(); ?>
 <html>
-<head>
-   <?php echo $this->headMeta(); ?>
-   <?php echo $this->headTitle(); ?>
-   <?php echo $this->headLink(); ?>
-</head>
-<body>
-    <h1>Layout Admina</h1>
-<?php echo $this->layout()->content; ?>
+    <head>
+        <?php echo $this->headMeta() ?>
+        <?php echo $this->headMeta(); ?>
+        <?php echo $this->headTitle(); ?>
+        <?php echo $this->headLink(); ?>
+    </head>
+    <body>
+        <h1>Layout Admina</h1>
+        <?php echo $this->layout()->content; ?>
 
-</body>
+    </body>
 </html>
