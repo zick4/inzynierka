@@ -12,5 +12,25 @@
  */
 class User extends Base_User
 {
-
+    private static $_salt = "ag26";
+    public function save()
+    {
+        // Tworzenie nowego użytkownika
+        if (empty($this->id))
+        {
+            //haszowanie i solenie hasła
+            $this->password = self::getHashedPassword($this->password);
+        }
+        parent::save();
+    }
+   /**
+    * 
+    *
+    * @param string $sPassword
+    * @return string
+    */
+    public static function getHashedPassword($sPassword)
+    {
+        return sha1($sPassword.self::$_salt);
+    }
 }
