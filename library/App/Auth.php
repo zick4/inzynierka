@@ -5,70 +5,88 @@
  * 
  * @author Paweł Grzeszczak
  */
-class App_Auth extends Zend_Auth
+class App_Auth implements Zend_Auth_Adapter_Interface  
 {
     /**
-     * Returns an instance of Zend_Auth
-     *
-     * Singleton pattern implementation
-     *
-     * @return Zend_Auth Provides a fluent interface
+     * @var Doctrine_Table
      */
-    public static function getInstance()
-    {
-        if (null === self::$_instance) {
-            self::$_instance = new self();
-        }
+    private $_table;
+    /**
+     * @var string
+     */
+    private $_tableName = "user";
 
-        return self::$_instance;
+    /**
+     * The field name which will be the identifier (username...)
+     *
+     * @var string
+     */
+    private $_identityCol = "email";
+
+    /**
+     * The field name which will be used for credentials (password...)
+     *
+     * @var string
+     */
+    private $_credentialCol = "password";
+
+    /**
+     * Actual identity value (my_all_known_username)
+     *
+     * @var string
+     */
+    private $_identity;
+
+    /**
+     * Actual credential value (my_secret_password)
+     *
+     * @var string
+     */
+    private $_credential;
+
+    public function  __construct()
+    {
+
+        $this->_table = Doctrine_Manager::connection()->getTable($this->_tableName);
+        $columnList = $this->_table->getColumnNames();
+        //Check if the identity and credential are one of the column names...
+        if (!in_array($this->_identityCol, $columnList) || !in_array($this->_credentialCol, $columnList)) {
+            throw new Zend_Auth_Adapter_Exception("Invalid Column names are given as '{$this->_credentialCol}' and '{$this->_credentialCol}'");
+        }
+ 
     }
 
     /**
-     * Dokonuje autoryzacji użytkownika
-     *
-     * @param array $aValues
-     * @return true|throw new AutenticationException
+     * @param string $i
      */
-    public function process($aValues)
+    public function setIdentity($i)
     {
-        // Get our authentication adapter and check credentials
-        $oAdapter = $this->_getAuthAdapter();
-        $oAdapter->setIdentity($aValues['email']);
-        $oAdapter->setCredential($aValues['password']);
-
-//        $oAuth = Zend_Auth::getInstance();
-        $result = $this->authenticate($oAdapter);
-        if ($result->isValid())
-        {
-
-            $oUser = $oAdapter->getResultRowObject();
-            $this->getStorage()->write($oUser);
-
-            return true;
-        }
-
-        $aErrors = $result->getMessages();
-        throw new AutenticationException($aErrors[0]);
+        $this->_identity = $i;
     }
+
     /**
-     * Zwraca adapter autoryzacyjny
-     *
-     * @return Zend_Auth_Adapter_DbTable
+     * @param string $c
      */
-    protected  function _getAuthAdapter()
+    public function setCredential($c)
     {
+        $this->_credential = $c;
+    }
 
-        $dbAdapter = Zend_Db_Table::getDefaultAdapter();
-        $authAdapter = new Zend_Auth_Adapter_DbTable($dbAdapter);
-
-        $authAdapter->setTableName('users')
-                ->setIdentityColumn('email')
-                ->setCredentialColumn('password')
-                ->setCredentialTreatment('md5(CONCAT(?,salt))');
-
-
-        return $authAdapter;
+    /**
+     * @return Zend_Auth_Result
+     */
+    public function authenticate()
+    {
+        //FIXME: Check if this querying actually works or not...
+        $result = $this->_table
+            ->createQuery("dctrn_find")
+            ->where("{$this->_credentialCol} = ?", $this->_credential)
+            ->andWhere("{$this->_identityCol} = ?", $this->_identity)
+            ->execute(array());
+        return new Zend_Auth_Result(
+            $result[0]->id ? Zend_Auth_Result::SUCCESS : Zend_Auth_Result::FAILURE, //You may define different failure types, however this one is enough
+            $result[0]->id ? $result[0] : null
+        );
     }
 
 }
-class App_Auth_Exception extends Exception {}
