@@ -2,9 +2,12 @@ User:
   columns:
     id:
       type: integer
+      autoincrement: true
       primary: true
-    username:
-      type: string(255)
+    email:
+      type: string(32)
       default: default username
     password:
       type: string(255)
+    birthday:
+      type: date
