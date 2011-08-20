@@ -40,22 +40,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $this->getApplication()->
                 getAutoloader()->
                 pushAutoloader(array('Doctrine_Core', 'autoload'));
-
+//        spl_autoload_register(array('Doctrine', 'modelsAutoload'));
+        
         $config = $this->getOption('doctrine');
         $manager = Doctrine_Manager::getInstance();
+//        Doctrine::loadModels($config['models_path']);
         foreach ($config as $key => $value)
         {
             if ($key != 'connection')
                 $manager->setAttribute($key, $value);
         }
-
-//        $manager->setAttribute(Doctrine_Core::ATTR_MODEL_CLASS_PREFIX, 'Model_');
-//        $manager->setAttribute(Doctrine_Core::ATTR_MODEL_LOADING, Doctrine_Core::MODEL_LOADING_PEAR);
-//        $manager->setAttribute(Doctrine_Core::ATTR_VALIDATE, Doctrine_Core::VALIDATE_ALL);
-//        $manager->setAttribute(Doctrine_Core::ATTR_USE_DQL_CALLBACKS, true);
-//        $manager->setAttribute(Doctrine_Core::ATTR_AUTO_FREE_QUERY_OBJECTS, true);
-//        $manager->setAttribute(Doctrine_Core::ATTR_AUTO_ACCESSOR_OVERRIDE, true);
-//        $manager->setAttribute(Doctrine_Core::ATTR_AUTOLOAD_TABLE_CLASSES, true);
 
         if (isset($config['cache']) && $config['cache'] == true)
         {

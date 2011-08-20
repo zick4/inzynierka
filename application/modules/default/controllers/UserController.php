@@ -3,6 +3,20 @@
 class UserController extends Zend_Controller_Action
 {
 
+    public function profilAction()
+    {
+        if (Zend_Auth::getInstance()->hasIdentity())
+        {
+            $oUser = Zend_Auth::getInstance()->getIdentity();
+
+            $this->view->oAlbums = $oUser->Albums;
+        }
+        else
+        {
+            $this->_helper->redirector('login'); // back to login page
+        }
+    }
+
     /**
      * Logowanie użytkownika
      */
@@ -18,24 +32,19 @@ class UserController extends Zend_Controller_Action
 
                 $aValues = $oForm->getValues();
                 $oAdapter = new App_Auth();
-                $oAdapter->setCredential(sha1($aValues['password'] . User::getSalt()));
+                $oAdapter->setCredential(User::getHashedPassword($aValues['password']));
                 $oAdapter->setIdentity($aValues['email']);
-//                App_Auth::getInstance()->process($oForm->getValues());
 
-//                $this->_helper->redirector('index', 'index');
                 $auth = Zend_Auth::getInstance();
                 $result = $auth->authenticate($oAdapter);
                 if ($result->isValid())
                 {
-                    exit("zalogowany :)");
-                    $this->_redirect("index"); //Redirect to index with success...
+                    $this->_helper->redirector('profil');
                 }
                 else
                 {
-                    Debug::dump($result);
-                    exit("niezalogowany :(");
+                    $oForm->addError($result->getMessages());
                 }
-//              $oForm->addError($e->getMessage());
             }
         }
         $this->view->oForm = $oForm;
@@ -46,7 +55,7 @@ class UserController extends Zend_Controller_Action
      */
     public function logoutAction()
     {
-        App_Auth::getInstance()->clearIdentity();
+        Zend_Auth::getInstance()->clearIdentity();
         $this->_helper->redirector('login'); // back to login page
     }
 
@@ -66,9 +75,9 @@ class UserController extends Zend_Controller_Action
             $oUser->email = $aValues['email'];
             $oUser->birthday = $aValues['birthday'];
             $oUser->save();
+            $this->_helper->redirector('profil'); 
         }
         $this->view->oForm = $oForm;
-        $this->_helper->redirector('login'); // back to login page
     }
 
 }

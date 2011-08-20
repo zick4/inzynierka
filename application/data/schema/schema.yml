@@ -1,3 +1,8 @@
+options:
+  type: INNODB
+  collate: utf8_general_ci
+  charset: utf8
+
 User:
   columns:
     id:
@@ -11,3 +16,22 @@ User:
       type: string(255)
     birthday:
       type: date
+  relations:
+    Albums:
+      type: many
+      class: Album
+      local: id
+      foreign: user_id
+      
+Album:
+  columns:
+    id:
+      type: integer
+      autoincrement: true
+      primary: true
+    user_id: integer
+    name: string
+  relations:
+    User:
+      local: user_id
+      foreign: id
