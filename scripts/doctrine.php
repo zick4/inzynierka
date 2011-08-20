@@ -1,8 +1,4 @@
-#!php
 <?php
-/**
- * Doctrine CLI script
- */
 
 // Define path to application directory
 defined('APPLICATION_PATH')
@@ -15,7 +11,7 @@ defined('APPLICATION_ENV')
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
     realpath(APPLICATION_PATH . '/../library'),
-    APPLICATION_PATH . '/modules/admin/models' ,
+    APPLICATION_PATH . '/models' ,
     get_include_path()
 )));
 
@@ -27,10 +23,10 @@ $application = new Zend_Application(
     APPLICATION_ENV,
     APPLICATION_PATH . '/configs/application.ini'
 );
+$autoloader = Zend_Loader_Autoloader::getInstance();
+$autoloader->setFallbackAutoloader(true) ;
 
 $application->getBootstrap()->bootstrap('doctrine');
 
-$config = $application->getOption('doctrine');
-
-$cli = new Doctrine_Cli($config);
+$cli = new Doctrine_Cli($application->getOption('doctrine'));
 $cli->run($_SERVER['argv']);
