@@ -13,7 +13,7 @@
 class User extends Base_User
 {
     private static $_salt = "ag26";
-    public function save()
+    public function save(Doctrine_Connection $conn = null)
     {
         // Tworzenie nowego użytkownika
         if (empty($this->id))

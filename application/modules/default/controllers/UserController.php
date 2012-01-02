@@ -29,7 +29,6 @@ class UserController extends Zend_Controller_Action
         {
             if ($oForm->isValid($oRequest->getPost()))
             {
-
                 $aValues = $oForm->getValues();
                 $oAdapter = new App_Auth();
                 $oAdapter->setCredential(User::getHashedPassword($aValues['password']));
@@ -43,7 +42,11 @@ class UserController extends Zend_Controller_Action
                 }
                 else
                 {
-                    $oForm->addError($result->getMessages());
+                    $mErrors = $result->getMessages();
+                    foreach ($mErrors as $sError)
+                    {
+                        $oForm->getElement("email")->addError($sError);
+                    }
                 }
             }
         }
@@ -75,7 +78,7 @@ class UserController extends Zend_Controller_Action
             $oUser->email = $aValues['email'];
             $oUser->birthday = $aValues['birthday'];
             $oUser->save();
-            $this->_helper->redirector('profil'); 
+            $this->_helper->redirector('profil');
         }
         $this->view->oForm = $oForm;
     }

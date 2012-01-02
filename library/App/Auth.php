@@ -14,7 +14,7 @@ class App_Auth implements Zend_Auth_Adapter_Interface
     /**
      * @var string
      */
-    private $_tableName = "user";
+    private $_tableName = "User";
 
     /**
      * The field name which will be the identifier (username...)
@@ -83,10 +83,17 @@ class App_Auth implements Zend_Auth_Adapter_Interface
             ->where("{$this->_credentialCol} = ?", $this->_credential)
             ->andWhere("{$this->_identityCol} = ?", $this->_identity)
             ->execute(array());
-        return new Zend_Auth_Result(
-            $result[0]->id ? Zend_Auth_Result::SUCCESS : Zend_Auth_Result::FAILURE, //You may define different failure types, however this one is enough
-            $result[0]->id ? $result[0] : null
-        );
+        // ok
+        if (!empty($result[0]->id))
+        {
+            $oRes = new Zend_Auth_Result(Zend_Auth_Result::SUCCESS, $result[0]);
+        }
+        // failure
+        else
+        {
+            $oRes = new Zend_Auth_Result(Zend_Auth_Result::FAILURE, null, array("Niepoprawny login lub hasło"));
+        }
+        return $oRes;
     }
 
 }
