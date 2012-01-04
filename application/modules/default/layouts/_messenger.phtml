@@ -1,0 +1,55 @@
+
+<div id="messenger" style="padding-bottom: 10px">
+
+    <!--
+    Later on, you can choose which template to use by referring to the
+    ID assigned to each template.  You'll also be able to refer
+    to each template by index, so in this example, "basic-tempate" is
+    index 0 and "advanced-template" is index 1.
+    -->
+    <div id="basic-template">
+        <a class="ui-notify-cross ui-notify-close" href="#">x</a>
+        <div style="float:left; margin-right: 5px;">
+            <img src="#{icon}">
+        </div>
+        <h1>#{title}</h1>
+        <p>#{text}</p>
+        <div style="clear: left;"></div>
+    </div>
+
+    <div id="advanced-template">
+        <!-- ... you get the idea ... -->
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    function notify(data){
+
+        $("#messenger").notify("create",  {
+                title: 'Powiadomienie',
+                text: data.message,
+
+                icon: '/images/ico/status_icons/'+data.status + '.png'
+            }, {
+                expires: false,
+            }
+        );
+
+    }
+    $(document).ready(function(){
+
+        $("#messenger").notify();
+        <?php $oFM = Zend_Controller_Action_HelperBroker::getStaticHelper('flashMessenger'); ?>
+        <?php foreach ($oFM->getCurrentMessages() as $aMessage): ?>
+               notify(<?php echo Zend_Json::encode($aMessage) ?>);
+               <?php $oFM->clearCurrentMessages() ?>
+        <?php endforeach ?>
+        <?php foreach ($oFM->getMessages() as $aMessage): ?>
+               notify(<?php echo Zend_Json::encode($aMessage) ?>);
+               <?php $oFM->clearMessages() ?>
+        <?php endforeach ?>
+
+    })
+</script>

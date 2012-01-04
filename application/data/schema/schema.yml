@@ -30,7 +30,9 @@ Album:
       autoincrement: true
       primary: true
     user_id: integer
-    name: string
+    name:
+      type: string
+      notnull: true
   relations:
     User:
       local: user_id
