@@ -1,8 +1,0 @@
-<h2>Albums List</h2>
-<?php if (!empty($this->aAlbums)): ?>
-    <?php foreach ($this->aAlbums as $aAlbum): ?>
-        <a href="<?php echo $this->url(array('album_id'=>$this->escape($aAlbum['id'])), 'album_show') ?>"><?php echo $aAlbum['name']?></a>
-    <?php endforeach ?>
-<?php else: ?>
-    Nie posiadasz żadnego albumu
-<?php endif ?>

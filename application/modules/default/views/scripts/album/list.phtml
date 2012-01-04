@@ -1,0 +1,24 @@
+<h2>Albums List</h2>
+
+<?php if (!empty($this->oUser->Albums[0])): ?>
+<table>
+    <tr><th>Id</th><th>Nazwa</th><th>Akcja</th></tr>
+    <?php foreach ($this->oUser->Albums as $oAlbum): ?>
+    <tr>
+        <td><?php echo (int)$oAlbum->id ?></td>
+        <td><a href="<?php echo $this->url(array('album_id'=>(int)$oAlbum->id), 'album_show') ?>"><?php echo $this->escape($oAlbum->name) ?></a></td>
+        <td>
+            <a href="<?php echo $this->url(array('album_id'=>(int)$oAlbum->id), 'album_edit') ?>">
+                <img src="/images/ico/edit.png" alt="Edycja" />
+            </a>
+            <a href="<?php echo $this->url(array('album_id'=>(int)$oAlbum->id), 'album_delete') ?>">
+                <img src="/images/ico/del.gif" alt="Usuwanie" />
+            </a>
+        </td>
+    </tr>
+    <?php endforeach ?>
+</table>
+<?php else: ?>
+    Nie posiadasz żadnego albumu
+<?php endif ?>
+<a href="<?php echo $this->url(array(), 'album_add') ?>">Dodaj album</a>
