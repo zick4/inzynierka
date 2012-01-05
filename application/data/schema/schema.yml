@@ -11,7 +11,7 @@ User:
       primary: true
     email:
       type: string(32)
-      default: default username
+      notnull: true
     password:
       type: string(255)
     birthday:
@@ -29,11 +29,36 @@ Album:
       type: integer
       autoincrement: true
       primary: true
-    user_id: integer
+    user_id:
+      type: integer
+      notnull: true
     name:
       type: string
       notnull: true
   relations:
     User:
       local: user_id
+      foreign: id
+    Photos:
+      type: many
+      class: Photo
+      local: id
+      foreign: album_id
+      
+Photo:
+  columns:
+    id:
+      type: integer
+      autoincrement: true
+      primary: true
+    album_id:
+      type: integer
+      notnull: true
+    description:
+      type: string
+      notnull: true
+      default: 
+  relations:
+    Album:
+      local: album_id
       foreign: id

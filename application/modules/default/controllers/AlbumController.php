@@ -7,12 +7,12 @@ class AlbumController extends Zend_Controller_Action
     {
         $this->_forward("list");
     }
-    
+
     public function listAction()
     {
         if (!Zend_Auth::getInstance()->hasIdentity())
         {
-            $this->_helper->redirector("login", "user");
+            $this->_helper->_redirector->setGotoRoute(array(), 'login');
         }
 
         $oUser = Zend_Auth::getInstance()->getIdentity();
@@ -24,7 +24,7 @@ class AlbumController extends Zend_Controller_Action
     {
         if (!Zend_Auth::getInstance()->hasIdentity())
         {
-            $this->_helper->redirector("login", "user");
+            $this->_helper->_redirector->setGotoRoute(array(), 'login');
         }
         $oUser = Zend_Auth::getInstance()->getIdentity();
         $oConfig = Zend_Registry::get('config_forms');
@@ -37,7 +37,7 @@ class AlbumController extends Zend_Controller_Action
                 $aValues = $oForm->getValues();
                 $oUser->Albums[]->name = $aValues['name'];
                 $oUser->save();
-                $this->_helper->redirector('index');
+                $this->_forward("list");
             }
         }
         $this->view->oForm = $oForm;
@@ -47,46 +47,56 @@ class AlbumController extends Zend_Controller_Action
     {
         if (!Zend_Auth::getInstance()->hasIdentity())
         {
-            $this->_helper->redirector("login", "user");
+            $this->_helper->_redirector->setGotoRoute(array(), 'login');
         }
         $oForm = new Zend_Form(Zend_Registry::get('config_forms')->album);
         $oAlbum = Doctrine_Core::getTable('Album')->find($this->getRequest()->getParam("album_id"));
-        if (empty($oAlbum->user_id) || $oAlbum->user_id !=  $oUser = Zend_Auth::getInstance()->getIdentity()->id)
+        if (empty($oAlbum) || $oAlbum->user_id != Zend_Auth::getInstance()->getIdentity()->id)
         {
-             $oForm->getElement("name")->addError("Nie istnieje taki album, lub nie masz odpowiednich prawnień");
+            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status" => "error"));
+            $this->_helper->redirector("list");
+
         }
-        $oRequest = $this->getRequest();
-        if ($oRequest->isPost())
+        else
         {
-            if ($oForm->isValid($oRequest->getPost()))
+
+            $oRequest = $this->getRequest();
+            if ($oRequest->isPost())
             {
-                $oAlbum->name = $oForm->getValue("name");
-                $oAlbum->save();
-                $this->_helper->redirector('index');
+                if ($oForm->isValid($oRequest->getPost()))
+                {
+                    $oAlbum->name = $oForm->getValue("name");
+                    $oAlbum->save();
+                    $this->_forward("list");
+                }
             }
+            $oForm->populate($oAlbum->toArray());
+            $this->view->oForm = $oForm;
         }
-        $oForm->populate($oAlbum->toArray());
-        $this->view->oForm = $oForm;
     }
 
     public function deleteAction()
     {
         if (!Zend_Auth::getInstance()->hasIdentity())
         {
-            $this->_helper->redirector("login", "user");
+            $this->_helper->_redirector->setGotoRoute(array(), 'login');
         }
         $oAlbum = Doctrine_Core::getTable('Album')->find($this->getRequest()->getParam("album_id"));
-        if (empty($oAlbum->user_id) || $oAlbum->user_id !=  $oUser = Zend_Auth::getInstance()->getIdentity()->id)
+        if (empty($oAlbum) || $oAlbum->user_id != Zend_Auth::getInstance()->getIdentity()->id)
         {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich prawnień", "status" => "error"));
+            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status" => "error"));
         }
-        $oAlbum->delete();
-        $this->_helper->redirector('index');
+        else
+        {
+
+            $oAlbum->delete();
+        }
+        $this->_forward("list");
     }
 
     public function showAction()
     {
-        
+        $this->view->Album = Doctrine_Core::getTable('Album')->find($this->getRequest()->getParam("album_id"));
     }
 
 }

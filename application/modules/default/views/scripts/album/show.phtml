@@ -1,0 +1,9 @@
+<h1>Zawartość albumu</h1>
+<?php if (!empty($this->Album->Photos[0]->id)): ?>
+    <?php foreach ($this->Album->Photos as $oPhoto): ?>
+        <?php echo $oPhoto->id . ". ".$this->escape($oPhoto->description) ?><br>
+    <?php endforeach ?>
+<?php else: ?>
+    Pusty album
+<?php endif ?>
+<a href="<?php echo $this->url(array('album_id'=>$this->Album->id), 'photo_add', true) ?>">dodaj zdjęcie</a>

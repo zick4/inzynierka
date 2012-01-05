@@ -5,15 +5,10 @@ class UserController extends Zend_Controller_Action
 
     public function profilAction()
     {
-        if (Zend_Auth::getInstance()->hasIdentity())
+        // uzytkownik musi być zalogowany
+        if (!Zend_Auth::getInstance()->hasIdentity())
         {
-            $oUser = Zend_Auth::getInstance()->getIdentity();
-
-            $this->view->oAlbums = $oUser->Albums;
-        }
-        else
-        {
-            $this->_helper->redirector('login'); // back to login page
+            $this->_helper->_redirector->setGotoRoute(array(), 'login');
         }
     }
 
@@ -38,14 +33,14 @@ class UserController extends Zend_Controller_Action
                 $result = $auth->authenticate($oAdapter);
                 if ($result->isValid())
                 {
-                    $this->_helper->redirector('profil');
+                    $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
                 }
                 else
                 {
                     $mErrors = $result->getMessages();
                     foreach ($mErrors as $sError)
                     {
-                        $oForm->getElement("email")->addError($sError);
+                        $this->_helper->flashMessenger->addMessage(array("message" => $sError, "status" => "error"));
                     }
                 }
             }
@@ -59,7 +54,7 @@ class UserController extends Zend_Controller_Action
     public function logoutAction()
     {
         Zend_Auth::getInstance()->clearIdentity();
-        $this->_helper->redirector('login'); // back to login page
+        $this->_helper->_redirector->setGotoRoute(array(), 'login');
     }
 
     /**

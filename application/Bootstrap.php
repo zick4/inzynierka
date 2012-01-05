@@ -77,11 +77,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
             $manager->setAttribute(Doctrine_Core::ATTR_QUERY_CACHE, $cacheDriver);
         }
 
-        $connection = $manager->openConnection($config['connection'], 'doctrine');
-        $connection->setAttribute(Doctrine_Core::ATTR_USE_NATIVE_ENUM, true);
-        $connection->setCharset('utf8');
-
-        return $connection;
+        $oConnection = $manager->openConnection($config['connection'], 'doctrine');
+        $oConnection->setAttribute(Doctrine_Core::ATTR_USE_NATIVE_ENUM, true);
+        $oConnection->setCharset('utf8');
+        Zend_Registry::set('connection', $oConnection);
     }
 
 }
