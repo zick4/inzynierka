@@ -30,10 +30,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->headScript()->appendFile("/jquery/js/jquery-1.6.2.min.js", 'text/javascript');
         $view->headScript()->appendFile("/jquery/js/jquery-ui-1.8.14.custom.min.js", 'text/javascript');
         $view->headScript()->appendFile("/jquery/js/jquery.notify.js", 'text/javascript');
+        $view->headScript()->appendFile("/jquery/js/jquery.lightbox-0.5.js", 'text/javascript');
         $view->headLink()->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'));
 
         $view->headLink()->appendStylesheet($view->baseUrl("/css/reset.css"), "screen");
         $view->headLink()->appendStylesheet($view->baseUrl("/jquery/css/ui.notify.css"), "screen");
+        $view->headLink()->appendStylesheet($view->baseUrl("/jquery/css/jquery.lightbox-0.5.css"), "screen");
         
         $view->headMeta()->appendHttpEquiv('Content-Type','text/html; charset=UTF-8');
         $view->headMeta()->appendHttpEquiv('Content-Language','pl-PL');

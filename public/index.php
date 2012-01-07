@@ -14,6 +14,8 @@ set_include_path(implode(PATH_SEPARATOR, array(
     APPLICATION_PATH . '/models' ,
     get_include_path()
 )));
+define('USER_FILES_PUBLIC_DIR', "/users_files");
+define('PUBLIC_DIR', APPLICATION_PATH.'/../public');
 
 /** Zend_Application */
 require_once 'Zend/Loader/Autoloader.php';

@@ -7,6 +7,7 @@
  * 
  * @property integer $id
  * @property integer $album_id
+ * @property string $extension
  * @property string $description
  * @property Album $Album
  * 
@@ -27,6 +28,10 @@ abstract class Base_Photo extends Doctrine_Record
              ));
         $this->hasColumn('album_id', 'integer', null, array(
              'type' => 'integer',
+             'notnull' => true,
+             ));
+        $this->hasColumn('extension', 'string', null, array(
+             'type' => 'string',
              'notnull' => true,
              ));
         $this->hasColumn('description', 'string', null, array(

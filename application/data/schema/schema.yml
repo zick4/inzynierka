@@ -54,6 +54,9 @@ Photo:
     album_id:
       type: integer
       notnull: true
+    extension:
+      type: string
+      notnull: true
     description:
       type: string
       notnull: true

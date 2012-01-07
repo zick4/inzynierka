@@ -1,9 +1,19 @@
+<script type="text/javascript">
+$(document).ready( function() {
+	$('#galeria a').lightBox();
+});
+</script>
 <h1>Zawartość albumu</h1>
+<div id="galeria">
+
 <?php if (!empty($this->Album->Photos[0]->id)): ?>
     <?php foreach ($this->Album->Photos as $oPhoto): ?>
-        <?php echo $oPhoto->id . ". ".$this->escape($oPhoto->description) ?><br>
+    <a href="<?php echo $oPhoto->getPhotoDir().$oPhoto->getPhotoFileName() ?>" title="<?php echo $this->escape($oPhoto->description) ?>">
+        <img src="<?php echo $oPhoto->getPhotoDir().$oPhoto->getPhotoMinFileName() ?>">
+    </a>
     <?php endforeach ?>
 <?php else: ?>
     Pusty album
 <?php endif ?>
+</div>
 <a href="<?php echo $this->url(array('album_id'=>$this->Album->id), 'photo_add', true) ?>">dodaj zdjęcie</a>

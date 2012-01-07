@@ -18,7 +18,7 @@ class PhotoController extends Zend_Controller_Action
         if (empty($oAlbum) || $oAlbum->user_id != $oUser->id)
         {
             $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status" => "error"));
-            $this->_forward('show', 'album', 'default', array('album_id'=>$oAlbum->id));
+            $this->_forward('show', 'album', 'default', array('album_id' => $oAlbum->id));
         }
         $oConfig = Zend_Registry::get('config_forms');
         $oForm = new Zend_Form($oConfig->photo);
@@ -29,18 +29,16 @@ class PhotoController extends Zend_Controller_Action
             if ($oForm->isValid($oRequest->getPost()))
             {
 
+                $oConnection = Zend_Registry::get('connection');
+                $oConnection->beginTransaction();
                 try {
 
-                    $oConnection = Zend_Registry::get('connection');
-                    $oConnection->beginTransaction();
-                    
                     // zapisanie nowego rekordu fotki
                     $oPhoto = new Photo();
                     $oPhoto->description = $oForm->getValue('description');
                     $oPhoto->album_id = $oAlbum->id;
-                    $oPhoto->save();
 
-                    $sPhotoDir = APPLICATION_PATH . "/../public/users_files/$oUser->id/$oAlbum->id";
+                    $sPhotoDir = PUBLIC_DIR.$oPhoto->getPhotoDir();
 
                     if (file_exists($sPhotoDir) || mkdir($sPhotoDir, 0777, true))
                     {
@@ -48,37 +46,39 @@ class PhotoController extends Zend_Controller_Action
                         $oUpload = new Zend_File_Transfer_Adapter_Http();
                         $oUpload->setDestination($sPhotoDir);
                         $oUpload->receive();
-     
+
+
                         // zmiana nazwy pliku z oryginalnej na id fotki
                         $aInfo = $oUpload->getFileInfo();
-                        $oFilterFileRename = new Zend_Filter_File_Rename(array('target' => "$sPhotoDir/{$oPhoto->id}.".$this->_findExtension($aInfo['photo']['name']), 'overwrite' => true));
+                        $oPhoto->extension = Photo::findExtension($aInfo['photo']['name']);
+                        $oPhoto->save();
+                        $oFilterFileRename = new Zend_Filter_File_Rename(array('target' => $sPhotoDir . $oPhoto->getPhotoFileName(), 'overwrite' => true));
                         $oFilterFileRename->filter($oUpload->getFileName());
+
+                        // tworzenie miniaturki
+                        $oPhoto->makeMiniature();
 
                         $oConnection->commit();
 
-                        $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oAlbum->id), 'album_show');
+                        $this->_helper->_redirector->setGotoRoute(array('album_id' => $oAlbum->id), 'album_show');
                     }
                     else
                     {
                         $oConnection->rollback();
                         $this->_helper->flashMessenger->addMessage(array("message" => "Nie udało się utworzyć katalogu dla zdjęć", "status" => "error"));
                     }
-                } catch (Zend_File_Transfer_Exception $e) {
+                }
+                catch (PhotoException $e) {
+                    $oConnection->rollback();
+                    $this->_helper->flashMessenger->addMessage(array("message" => $e->getMessage(), "status" => "error"));
+                }
+                catch (Zend_File_Transfer_Exception $e) {
                     $oConnection->rollback();
                     $this->_helper->flashMessenger->addMessage(array("message" => $e->getMessage(), "status" => "error"));
                 }
             }
         }
         $this->view->oForm = $oForm;
-    }
-
-    protected function _findExtension($sFilename)
-    {
-        $sFilename = strtolower($sFilename);
-        $tmp = preg_split("[/\\.]", $sFilename);
-        $n = count($tmp) - 1;
-        $sExtension = $tmp[$n];
-        return $sExtension;
     }
 
 }
