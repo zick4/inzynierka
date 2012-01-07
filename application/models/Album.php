@@ -15,7 +15,65 @@ class Album extends Base_Album
 
     public function delete(Doctrine_Connection $conn = null)
     {
+        foreach ($this->Photos as $oPhoto)
+        {
+            $oPhoto->delete();
+        }
+
+        $this->_deleteDir();
+
         parent::delete($conn);
-        // usuwanie zdjęć
     }
+
+    /**
+     * Ścieżka bezwzględna do katalogu ze zdjęciami.
+     * (dla użytkownikam, nie dla systemu pliku)
+     *
+     * @return string
+     */
+    public function getDir()
+    {
+        return USER_FILES_PUBLIC_DIR.'/' . $this->User->id . '/' . $this->id . '/';
+    }
+    
+    private function _deleteDir()
+    {
+        $dirName = PUBLIC_DIR.$this->getDir();
+        $dirHandle = opendir($dirName);
+        if ($dirHandle)
+        {
+            while (false !== ($dirFile = readdir($dirHandle)))
+            {
+                if ($dirFile != "." && $dirFile != "..")
+                {
+
+                    // tu moje, bo problem z katalogiem wewnątrz
+                    if (is_dir($dirName . "/" . $dirFile))
+                    {
+                        $this->_deleteDir($dirName . "/" . $dirFile, true);
+                    }
+                    else
+                    {
+                        //koniec mojego z katalogiem wewnątrz
+
+                        if (!unlink($dirName . "/" . $dirFile))
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            closedir($dirHandle);
+            if (!rmdir($dirName))
+            {
+                return false;
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 }

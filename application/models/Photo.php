@@ -13,15 +13,6 @@
 class Photo extends Base_Photo
 {
 
-    /**
-     * Ścieżka do katalogu ze zdjęciami
-     *
-     * @return string
-     */
-    public function getPhotoDir()
-    {
-        return USER_FILES_PUBLIC_DIR.'/' . $this->Album->User->id . '/' . $this->Album->id . '/';
-    }
 
     /**
      * Zwraca nazwę pliku ze zdjęciem
@@ -57,7 +48,7 @@ class Photo extends Base_Photo
     public function makeMiniature($docelowa_szerokosc = 80, $docelowa_wysokosc = 80)
     {
 
-        $orginalny_obrazek = PUBLIC_DIR.$this->getPhotoDir() . $this->getPhotoFileName();
+        $orginalny_obrazek = PUBLIC_DIR.$this->Album->getDir() . $this->getPhotoFileName();
         // Pobranie orginalnych parametrów i kalkulacja skali
         list($szerokosc, $wysokosc) = getimagesize($orginalny_obrazek);
         $xskala = $szerokosc / $docelowa_szerokosc;
@@ -83,7 +74,7 @@ class Photo extends Base_Photo
             throw new PhotoException("Nie udało się utworzyć miniaturki");
         }
 
-        $dst = PUBLIC_DIR.$this->getPhotoDir() . $this->getPhotoMinFileName();
+        $dst = PUBLIC_DIR.$this->Album->getDir() . $this->getPhotoMinFileName();
 
         switch (strtolower($this->extension))
         {
@@ -112,8 +103,8 @@ class Photo extends Base_Photo
     public function delete(Doctrine_Connection $conn = null)
     {
         // usuwanie fotki i miniaturki z dysku
-        unlink(PUBLIC_DIR.$this->getPhotoDir().$this->getPhotoFileName());
-        unlink(PUBLIC_DIR.$this->getPhotoDir().$this->getPhotoMinFileName());
+        unlink(PUBLIC_DIR.$this->Album->getDir().$this->getPhotoFileName());
+        unlink(PUBLIC_DIR.$this->Album->getDir().$this->getPhotoMinFileName());
         parent::delete($conn);
     }
 

@@ -7,6 +7,7 @@ class PhotoController extends Zend_Controller_Action
         // uzytkownik musi być zalogowany
         if (!Zend_Auth::getInstance()->hasIdentity())
         {
+            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status" => "warning"));
             $this->_helper->_redirector->setGotoRoute(array(), 'login');
         }
         $oUser = Zend_Auth::getInstance()->getIdentity();
@@ -20,6 +21,7 @@ class PhotoController extends Zend_Controller_Action
             $this->_helper->_redirector->setGotoRoute(array(), 'profil');
         }
         $oPhoto->delete();
+        $this->_helper->flashMessenger->addMessage(array("message" => "Zdjęcie zostało usunięte", "status" => "ok"));
         $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
     }
 
@@ -28,6 +30,7 @@ class PhotoController extends Zend_Controller_Action
         // uzytkownik musi być zalogowany
         if (!Zend_Auth::getInstance()->hasIdentity())
         {
+            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status" => "warning"));
             $this->_helper->_redirector->setGotoRoute(array(), 'login');
         }
         $oUser = Zend_Auth::getInstance()->getIdentity();
@@ -58,13 +61,13 @@ class PhotoController extends Zend_Controller_Action
                     $oPhoto->description = $oForm->getValue('description');
                     $oPhoto->album_id = $oAlbum->id;
 
-                    $sPhotoDir = PUBLIC_DIR.$oPhoto->getPhotoDir();
+                    $sAlbumDir = PUBLIC_DIR.$oPhoto->Album->getDir();
 
-                    if (file_exists($sPhotoDir) || mkdir($sPhotoDir, 0777, true))
+                    if (file_exists($sAlbumDir) || mkdir($sAlbumDir, 0777, true))
                     {
                         // upload fotki
                         $oUpload = new Zend_File_Transfer_Adapter_Http();
-                        $oUpload->setDestination($sPhotoDir);
+                        $oUpload->setDestination($sAlbumDir);
                         $oUpload->receive();
 
 
@@ -72,14 +75,14 @@ class PhotoController extends Zend_Controller_Action
                         $aInfo = $oUpload->getFileInfo();
                         $oPhoto->extension = Photo::findExtension($aInfo['photo']['name']);
                         $oPhoto->save();
-                        $oFilterFileRename = new Zend_Filter_File_Rename(array('target' => $sPhotoDir . $oPhoto->getPhotoFileName(), 'overwrite' => true));
+                        $oFilterFileRename = new Zend_Filter_File_Rename(array('target' => $sAlbumDir . $oPhoto->getPhotoFileName(), 'overwrite' => true));
                         $oFilterFileRename->filter($oUpload->getFileName());
 
                         // tworzenie miniaturki
                         $oPhoto->makeMiniature();
 
                         $oConnection->commit();
-
+                        $this->_helper->flashMessenger->addMessage(array("message" => "Zdjęcie zostało dodane", "status" => "ok"));
                         $this->_helper->_redirector->setGotoRoute(array('album_id' => $oAlbum->id), 'album_show');
                     }
                     else

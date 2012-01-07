@@ -8,6 +8,7 @@ class UserController extends Zend_Controller_Action
         // uzytkownik musi być zalogowany
         if (!Zend_Auth::getInstance()->hasIdentity())
         {
+            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status" => "warning"));
             $this->_helper->_redirector->setGotoRoute(array(), 'login');
         }
     }
@@ -33,6 +34,7 @@ class UserController extends Zend_Controller_Action
                 $result = $auth->authenticate($oAdapter);
                 if ($result->isValid())
                 {
+                    $this->_helper->flashMessenger->addMessage(array("message" => "Witaj!", "status" => "ok"));
                     $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
                 }
                 else
@@ -54,6 +56,7 @@ class UserController extends Zend_Controller_Action
     public function logoutAction()
     {
         Zend_Auth::getInstance()->clearIdentity();
+        $this->_helper->flashMessenger->addMessage(array("message" => "Wylogowałeś się z systemu", "status" => "ok"));
         $this->_helper->_redirector->setGotoRoute(array(), 'login');
     }
 
@@ -73,6 +76,7 @@ class UserController extends Zend_Controller_Action
             $oUser->email = $aValues['email'];
             $oUser->birthday = $aValues['birthday'];
             $oUser->save();
+            $this->_helper->flashMessenger->addMessage(array("message" => "Rejestracja zakończona powodzeniem", "status" => "ok"));
             $this->_helper->redirector('profil');
         }
         $this->view->oForm = $oForm;

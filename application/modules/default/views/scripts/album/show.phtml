@@ -8,8 +8,8 @@ $(document).ready( function() {
 
 <?php if (!empty($this->Album->Photos[0]->id)): ?>
     <?php foreach ($this->Album->Photos as $oPhoto): ?>
-    <a class="photo" href="<?php echo $oPhoto->getPhotoDir().$oPhoto->getPhotoFileName() ?>" title="<?php echo $this->escape($oPhoto->description) ?>">
-        <img alt="<?php echo $this->escape($oPhoto->description) ?>" src="<?php echo $oPhoto->getPhotoDir().$oPhoto->getPhotoMinFileName() ?>">
+    <a class="photo" href="<?php echo $oPhoto->Album->getDir().$oPhoto->getPhotoFileName() ?>" title="<?php echo $this->escape($oPhoto->description) ?>">
+        <img alt="<?php echo $this->escape($oPhoto->description) ?>" src="<?php echo $oPhoto->Album->getDir().$oPhoto->getPhotoMinFileName() ?>">
     </a>
     <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_delete') ?>" title="Usuń obrazek">
         <img  alt="Usuń obrazek" src="">
