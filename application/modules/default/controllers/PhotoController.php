@@ -2,6 +2,26 @@
 
 class PhotoController extends Zend_Controller_Action
 {
+    public function deleteAction()
+    {
+        // uzytkownik musi być zalogowany
+        if (!Zend_Auth::getInstance()->hasIdentity())
+        {
+            $this->_helper->_redirector->setGotoRoute(array(), 'login');
+        }
+        $oUser = Zend_Auth::getInstance()->getIdentity();
+        $iPhotoId = (int) $this->getRequest()->getParam("photo_id");
+        $oPhoto = Doctrine_Core::getTable('Photo')->find($iPhotoId);
+
+        // sprawdzenie uprawnień
+        if (empty($oPhoto) || $oPhoto->Album->user_id != $oUser->id)
+        {
+            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status" => "error"));
+            $this->_helper->_redirector->setGotoRoute(array(), 'profil');
+        }
+        $oPhoto->delete();
+        $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
+    }
 
     public function addAction()
     {
@@ -18,7 +38,7 @@ class PhotoController extends Zend_Controller_Action
         if (empty($oAlbum) || $oAlbum->user_id != $oUser->id)
         {
             $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status" => "error"));
-            $this->_forward('show', 'album', 'default', array('album_id' => $oAlbum->id));
+            $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
         }
         $oConfig = Zend_Registry::get('config_forms');
         $oForm = new Zend_Form($oConfig->photo);

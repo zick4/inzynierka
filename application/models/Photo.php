@@ -109,4 +109,12 @@ class Photo extends Base_Photo
         }
     }
 
+    public function delete(Doctrine_Connection $conn = null)
+    {
+        // usuwanie fotki i miniaturki z dysku
+        unlink(PUBLIC_DIR.$this->getPhotoDir().$this->getPhotoFileName());
+        unlink(PUBLIC_DIR.$this->getPhotoDir().$this->getPhotoMinFileName());
+        parent::delete($conn);
+    }
+
 }
