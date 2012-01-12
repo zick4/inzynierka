@@ -12,6 +12,10 @@ User:
     email:
       type: string(32)
       notnull: true
+    role:
+      type: string(16)
+      notnull: true
+      default: member
     password:
       type: string(255)
     birthday:

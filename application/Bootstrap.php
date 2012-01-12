@@ -8,47 +8,62 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
         $layoutModulePlugin = new App_Plugins_Module();
         $layoutModulePlugin->registerModuleLayout(
-                'default',
-                realpath(APPLICATION_PATH . "/modules/default/layouts"),
-                'layout'
+                'default', realpath(APPLICATION_PATH . "/modules/default/layouts"), 'layout'
         );
         $layoutModulePlugin->registerModuleLayout(
-                'admin',
-                realpath(APPLICATION_PATH . "/modules/admin/layouts"),
-                'layout'
+                'admin', realpath(APPLICATION_PATH . "/modules/admin/layouts"), 'layout'
         );
-        $front = Zend_Controller_Front::getInstance();
+        $front              = Zend_Controller_Front::getInstance();
         $front->registerPlugin($layoutModulePlugin);
+    }
+
+    protected function _initAcl()
+    {
+        $oAcl = new Zend_Acl();
+
+        $roleAll = new Zend_Acl_Role('all');
+        $oAcl->addRole($roleAll);
+        $oAcl->addRole(new Zend_Acl_Role('member'), $roleAll);
+        $oAcl->addRole(new Zend_Acl_Role('guest'), $roleAll);
+        $oAcl->addRole(new Zend_Acl_Role('admin'));
+
+        $oAcl->addResource('user');
+        $oAcl->addResource('album');
+
+        $oAcl->allow('all', array('album'), array('list', 'show'));
+        $oAcl->allow('member', array('album'), array('save', 'delete', 'add'));
+        $oAcl->allow('member', array('user'), array('logout', 'account'));
+        $oAcl->allow('guest', array('user'), array('login'));
+        $oAcl->deny('admin', array('user'), array('logout'));
+
+        Zend_View_Helper_Navigation_HelperAbstract::setDefaultAcl($oAcl);
+        
     }
 
     protected function _initView()
     {
         $this->bootstrap("layout");
         $layout = $this->getResource("layout");
-        $view = $layout->getView();
+        $view   = $layout->getView();
+
+        $config     = require APPLICATION_PATH . '/configs/navigation.php';
+        $navigation = new Zend_Navigation($config);
+        $view->navigation($navigation);
+
+
         $view->headScript()->appendFile("http://html5shiv.googlecode.com/svn/trunk/html5.js", 'text/javascript', array('conditional' => 'lt IE 9'));
         $view->headScript()->appendFile("/jquery/js/jquery-1.6.2.min.js", 'text/javascript');
         $view->headScript()->appendFile("/jquery/js/jquery-ui-1.8.14.custom.min.js", 'text/javascript');
         $view->headScript()->appendFile("/jquery/js/jquery.notify.js", 'text/javascript');
         $view->headScript()->appendFile("/jquery/js/jquery.lightbox-0.5.js", 'text/javascript');
-        $view->headLink()->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'));
+        $view->headLink()->headLink(array('rel'  => 'favicon', 'href' => '/favicon.ico'));
 
         $view->headLink()->appendStylesheet($view->baseUrl("/css/reset.css"), "screen");
         $view->headLink()->appendStylesheet($view->baseUrl("/jquery/css/ui.notify.css"), "screen");
         $view->headLink()->appendStylesheet($view->baseUrl("/jquery/css/jquery.lightbox-0.5.css"), "screen");
-        
-        $view->headMeta()->appendHttpEquiv('Content-Type','text/html; charset=UTF-8');
-        $view->headMeta()->appendHttpEquiv('Content-Language','pl-PL');
-    }
 
-    protected function _initFlashMessenger()
-    {
-        /** @var $flashMessenger Zend_Controller_Action_Helper_FlashMessenger */
-//        $flashMessenger = Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger');
-//        if ($flashMessenger->hasMessages()) {
-//            $view = $this->getResource('view');
-//            $view->messages = $flashMessenger->getMessages();
-//        }
+        $view->headMeta()->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8');
+        $view->headMeta()->appendHttpEquiv('Content-Language', 'pl-PL');
     }
 
     protected function _initForm()
@@ -59,14 +74,13 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     protected function _initDoctrine()
     {
         $this->getApplication()
-             ->getAutoloader()
-             ->pushAutoloader(array('Doctrine_Core', 'autoload'))
+                ->getAutoloader()
+                ->pushAutoloader(array('Doctrine_Core', 'autoload'))
         ;
-//        spl_autoload_register(array('Doctrine', 'modelsAutoload'));
-        
-        $config = $this->getOption('doctrine');
+
+        $config  = $this->getOption('doctrine');
         $manager = Doctrine_Manager::getInstance();
-//        Doctrine::loadModels($config['models_path']);
+
         foreach ($config as $key => $value)
         {
             if ($key != 'connection')
@@ -83,6 +97,16 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $oConnection->setAttribute(Doctrine_Core::ATTR_USE_NATIVE_ENUM, true);
         $oConnection->setCharset('utf8');
         Zend_Registry::set('connection', $oConnection);
+
+        if (Zend_Auth::getInstance()->hasIdentity())
+        {
+            Zend_View_Helper_Navigation_HelperAbstract::setDefaultRole(Zend_Auth::getInstance()->getIdentity()->role);
+        }
+        else
+        {
+            Zend_View_Helper_Navigation_HelperAbstract::setDefaultRole('guest');
+        }
+
     }
 
 }

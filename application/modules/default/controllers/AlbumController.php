@@ -12,10 +12,15 @@ class AlbumController extends Zend_Controller_Action
     {
         if (!Zend_Auth::getInstance()->hasIdentity())
         {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status" => "warning"));
+            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status"  => "warning"));
             $this->_helper->_redirector->setGotoRoute(array(), 'login');
         }
 
+        $iUserId = $this->getRequest()->getParam("user_id");
+        if ($iUserId)
+        {
+            $oUser = Doctrine_Core::getTable('User')->find($iUserId);
+        }
         $oUser = Zend_Auth::getInstance()->getIdentity();
 
         $this->view->oUser = $oUser;
@@ -25,12 +30,12 @@ class AlbumController extends Zend_Controller_Action
     {
         if (!Zend_Auth::getInstance()->hasIdentity())
         {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status" => "warning"));
+            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status"  => "warning"));
             $this->_helper->_redirector->setGotoRoute(array(), 'login');
         }
-        $oUser = Zend_Auth::getInstance()->getIdentity();
-        $oConfig = Zend_Registry::get('config_forms');
-        $oForm = new Zend_Form($oConfig->album);
+        $oUser    = Zend_Auth::getInstance()->getIdentity();
+        $oConfig  = Zend_Registry::get('config_forms');
+        $oForm    = new Zend_Form($oConfig->album);
         $oRequest = $this->getRequest();
         if ($oRequest->isPost())
         {
@@ -39,7 +44,7 @@ class AlbumController extends Zend_Controller_Action
                 $aValues = $oForm->getValues();
                 $oUser->Albums[]->name = $aValues['name'];
                 $oUser->save();
-                $this->_helper->flashMessenger->addMessage(array("message" => "Album został dodany", "status" => "ok"));
+                $this->_helper->flashMessenger->addMessage(array("message" => "Album został dodany", "status"  => "ok"));
                 $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
             }
         }
@@ -50,16 +55,15 @@ class AlbumController extends Zend_Controller_Action
     {
         if (!Zend_Auth::getInstance()->hasIdentity())
         {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status" => "warning"));
+            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status"  => "warning"));
             $this->_helper->_redirector->setGotoRoute(array(), 'login');
         }
-        $oForm = new Zend_Form(Zend_Registry::get('config_forms')->album);
+        $oForm  = new Zend_Form(Zend_Registry::get('config_forms')->album);
         $oAlbum = Doctrine_Core::getTable('Album')->find($this->getRequest()->getParam("album_id"));
         if (empty($oAlbum) || $oAlbum->user_id != Zend_Auth::getInstance()->getIdentity()->id)
         {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status" => "error"));
+            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status"  => "error"));
             $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
-
         }
         else
         {
@@ -71,7 +75,7 @@ class AlbumController extends Zend_Controller_Action
                 {
                     $oAlbum->name = $oForm->getValue("name");
                     $oAlbum->save();
-                    $this->_helper->flashMessenger->addMessage(array("message" => "Album został zmieniony", "status" => "ok"));
+                    $this->_helper->flashMessenger->addMessage(array("message" => "Album został zmieniony", "status"  => "ok"));
                     $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
                 }
             }
@@ -84,17 +88,17 @@ class AlbumController extends Zend_Controller_Action
     {
         if (!Zend_Auth::getInstance()->hasIdentity())
         {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status" => "warning"));
+            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status"  => "warning"));
             $this->_helper->_redirector->setGotoRoute(array(), 'login');
         }
         $oAlbum = Doctrine_Core::getTable('Album')->find($this->getRequest()->getParam("album_id"));
         if (empty($oAlbum) || $oAlbum->user_id != Zend_Auth::getInstance()->getIdentity()->id)
         {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status" => "error"));
+            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status"  => "error"));
         }
         else
         {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Album został usunięty", "status" => "ok"));
+            $this->_helper->flashMessenger->addMessage(array("message" => "Album został usunięty", "status"  => "ok"));
             $oAlbum->delete();
         }
         $this->_helper->_redirector->setGotoRoute(array(), 'album_list');

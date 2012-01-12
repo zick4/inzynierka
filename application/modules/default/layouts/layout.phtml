@@ -8,10 +8,36 @@
         <?php echo $this->headScript() ?>
         <?php echo $this->headStyle() ?>
     </head>
+    <style>
+        #main-menu a {
+            color: white;
+        }
+    </style>
     <body>
-        <h1>Layout defaultowy  </h1>
         <?php echo $this->loggedInAs() ?>
-        <?php echo $this->layout()->content ?>
+        <h1>Layout defaultowy  </h1>
+        <div id="main-menu" style="background-color: blue; color: white;">
+            <?php echo $this->navigation()->menu()->setMaxDepth(1) ?>
+            <div class="clear"></div>
+        </div>
+
+
+<!--        <div id="sub-menu" class="left" style="background-color: red; color: white;">
+            <?php echo $this->navigation()->menu()->renderSubMenu() ?>
+        </div>-->
+        <div id="content" class="left">
+            <?php echo $this->layout()->content; ?>
+        </div>
+        <div class="clear"></div>
+<!--        <div id="breadcrumbs">
+            <?php
+            echo $this->navigation()->breadcrumbs()
+                    ->setMinDepth(0)
+                    ->setSeparator(' &raquo; ')
+            ?>
+        </div>-->
+
+
         <?php echo $this->partial('_messenger.phtml') ?>
     </body>
 </html>

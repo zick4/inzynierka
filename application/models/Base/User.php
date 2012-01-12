@@ -7,6 +7,7 @@
  * 
  * @property integer $id
  * @property string $email
+ * @property string $role
  * @property string $password
  * @property date $birthday
  * @property Doctrine_Collection $Albums
@@ -30,6 +31,12 @@ abstract class Base_User extends Doctrine_Record
              'type' => 'string',
              'notnull' => true,
              'length' => '32',
+             ));
+        $this->hasColumn('role', 'string', 16, array(
+             'type' => 'string',
+             'notnull' => true,
+             'default' => 'member',
+             'length' => '16',
              ));
         $this->hasColumn('password', 'string', 255, array(
              'type' => 'string',

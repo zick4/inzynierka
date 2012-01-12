@@ -13,9 +13,9 @@
 class Photo extends Base_Photo
 {
 
-
     /**
      * Zwraca nazwę pliku ze zdjęciem
+     * 
      * @return string
      */
     public function getPhotoFileName()
@@ -33,6 +33,11 @@ class Photo extends Base_Photo
         return $this->id . '-min.' . $this->extension;
     }
 
+    /**
+     * Zwraca roszerzenie pliku
+     * @param string $sFilename
+     * @return string
+     */
     public static function findExtension($sFilename)
     {
         $tmp = explode(".", strtolower($sFilename));
@@ -40,72 +45,39 @@ class Photo extends Base_Photo
     }
 
     /**
+     * Tworzenie miniatury
      *
-     * @param int $docelowa_szerokosc
-     * @param int $docelowa_wysokosc
+     * @param int $iWidth
+     * @param int $iHeight
      * @throws PhotoException - gdy nie uda się utworzyć miniaturki
      */
-    public function makeMiniature($docelowa_szerokosc = 80, $docelowa_wysokosc = 80)
+    public function makeMiniature($iWidth = 100, $iHeight = 0)
     {
 
-        $orginalny_obrazek = PUBLIC_DIR.$this->Album->getDir() . $this->getPhotoFileName();
-        // Pobranie orginalnych parametrów i kalkulacja skali
-        list($szerokosc, $wysokosc) = getimagesize($orginalny_obrazek);
-        $xskala = $szerokosc / $docelowa_szerokosc;
-        $yskala = $wysokosc / $docelowa_wysokosc;
-
-        // Kalkulacja nowego rozmiaru
-        if ($yskala > $xskala)
-        {
-            $nowa_szerokosc = round($szerokosc * (1 / $yskala));
-            $nowa_wysokosc = round($wysokosc * (1 / $yskala));
-        }
-        else
-        {
-            $nowa_szerokosc = round($szerokosc * (1 / $xskala));
-            $nowa_wysokosc = round($wysokosc * (1 / $xskala));
-        }
-
-        // Zmiana rozmiaru orginalnego obrazu
-        $obraz_zmiana_wielkosci = imagecreatetruecolor($nowa_szerokosc, $nowa_wysokosc);
-        $obrazek_tymczasowy = imagecreatefromjpeg($orginalny_obrazek);
-        if (!imagecopyresampled($obraz_zmiana_wielkosci, $obrazek_tymczasowy, 0, 0, 0, 0, $nowa_szerokosc, $nowa_wysokosc, $szerokosc, $wysokosc))
-        {
-            throw new PhotoException("Nie udało się utworzyć miniaturki");
-        }
-
-        $dst = PUBLIC_DIR.$this->Album->getDir() . $this->getPhotoMinFileName();
-
-        switch (strtolower($this->extension))
-        {
-            case 'gif':
-                if (!imagegif($obraz_zmiana_wielkosci, $dst))
-                {
-                    throw new PhotoException("Nie udało się zapisać miniaturki w formacie gif");
-                }
-                break;
-            case 'jpeg':
-            case 'jpg':
-                if (!imagejpeg($obraz_zmiana_wielkosci, $dst))
-                {
-                    throw new PhotoException("Nie udało się zapisać miniaturki w formacie jpeg");
-                }
-                break;
-            case 'png':
-                if (!imagepng($obraz_zmiana_wielkosci, $dst))
-                {
-                    throw new PhotoException("Nie udało się zapisać miniaturki w formacie png");
-                }
-                break;
-        }
+        $image = new Gmagick($this->getPath() . $this->getPhotoFileName());
+        $image->thumbnailImage($iWidth, $iHeight);
+        $image->write($this->getPath() . $this->getPhotoMinFileName());
     }
 
+    /**
+     * Usuwanie obrazkas
+     * @param Doctrine_Connection $conn
+     */
     public function delete(Doctrine_Connection $conn = null)
     {
         // usuwanie fotki i miniaturki z dysku
-        unlink(PUBLIC_DIR.$this->Album->getDir().$this->getPhotoFileName());
-        unlink(PUBLIC_DIR.$this->Album->getDir().$this->getPhotoMinFileName());
+        unlink($this->getPath() . $this->getPhotoFileName());
+        unlink($this->getPath() . $this->getPhotoMinFileName());
         parent::delete($conn);
+    }
+
+    /**
+     * Bezwzględna ścieżka dla obrazków
+     * @return string
+     */
+    public function getPath()
+    {
+        return PUBLIC_DIR . $this->Album->getDir();
     }
 
 }

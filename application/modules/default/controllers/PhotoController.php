@@ -61,7 +61,7 @@ class PhotoController extends Zend_Controller_Action
                     $oPhoto->description = $oForm->getValue('description');
                     $oPhoto->album_id = $oAlbum->id;
 
-                    $sAlbumDir = PUBLIC_DIR.$oPhoto->Album->getDir();
+                    $sAlbumDir = $oPhoto->getPath();
 
                     if (file_exists($sAlbumDir) || mkdir($sAlbumDir, 0777, true))
                     {
