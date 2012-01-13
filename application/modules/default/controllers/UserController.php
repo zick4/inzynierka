@@ -1,16 +1,11 @@
 <?php
 
-class UserController extends Zend_Controller_Action
+class UserController extends App_Controller
 {
 
     public function profilAction()
     {
-        // uzytkownik musi być zalogowany
-        if (!Zend_Auth::getInstance()->hasIdentity())
-        {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status" => "warning"));
-            $this->_helper->_redirector->setGotoRoute(array(), 'login');
-        }
+        $this->_checkIdentity();
     }
 
     /**

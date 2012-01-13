@@ -23,6 +23,42 @@ class Photo extends Base_Photo
         return $this->id . '.' . $this->extension;
     }
 
+    public function flip()
+    {
+        $oImage = new Gmagick();
+        $oImage->readImage($this->getPath().$this->getPhotoFileName());
+        $oImage->flipImage();
+        $oImage->writeImage($this->getPath().$this->getPhotoFileName());
+        $oImage->destroy();
+    }
+
+    public function flop()
+    {
+        $oImage = new Gmagick();
+        $oImage->readImage($this->getPath().$this->getPhotoFileName());
+        $oImage->flopImage();
+        $oImage->writeImage($this->getPath().$this->getPhotoFileName());
+        $oImage->destroy();
+    }
+    
+    public function charcoal()
+    {
+        $oImage = new Gmagick();
+        $oImage->readImage($this->getPath().$this->getPhotoFileName());
+        $oImage->charcoalImage(5, 0.2);
+        $oImage->writeImage($this->getPath().$this->getPhotoFileName());
+        $oImage->destroy();
+    }
+
+    public function oilPaint()
+    {
+        $oImage = new Gmagick();
+        $oImage->readImage($this->getPath().$this->getPhotoFileName());
+        $oImage->oilPaintImage(2.5);
+        $oImage->writeImage($this->getPath().$this->getPhotoFileName());
+        $oImage->destroy();
+    }
+
     /**
      * Zwraca nazwę pliku z miniaturką zdjęcia
      *

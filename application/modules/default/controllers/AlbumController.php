@@ -1,6 +1,6 @@
 <?php
 
-class AlbumController extends Zend_Controller_Action
+class AlbumController extends App_Controller
 {
 
     public function indexAction()
@@ -10,12 +10,7 @@ class AlbumController extends Zend_Controller_Action
 
     public function listAction()
     {
-        if (!Zend_Auth::getInstance()->hasIdentity())
-        {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status"  => "warning"));
-            $this->_helper->_redirector->setGotoRoute(array(), 'login');
-        }
-
+        $oUser = $this->_checkIdentity();
         $iUserId = $this->getRequest()->getParam("user_id");
         if ($iUserId)
         {
@@ -28,12 +23,7 @@ class AlbumController extends Zend_Controller_Action
 
     public function addAction()
     {
-        if (!Zend_Auth::getInstance()->hasIdentity())
-        {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status"  => "warning"));
-            $this->_helper->_redirector->setGotoRoute(array(), 'login');
-        }
-        $oUser    = Zend_Auth::getInstance()->getIdentity();
+        $oUser = $this->_getIdentity();
         $oConfig  = Zend_Registry::get('config_forms');
         $oForm    = new Zend_Form($oConfig->album);
         $oRequest = $this->getRequest();
@@ -53,11 +43,7 @@ class AlbumController extends Zend_Controller_Action
 
     public function editAction()
     {
-        if (!Zend_Auth::getInstance()->hasIdentity())
-        {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status"  => "warning"));
-            $this->_helper->_redirector->setGotoRoute(array(), 'login');
-        }
+        $oUser = $this->_checkIdentity();
         $oForm  = new Zend_Form(Zend_Registry::get('config_forms')->album);
         $oAlbum = Doctrine_Core::getTable('Album')->find($this->getRequest()->getParam("album_id"));
         if (empty($oAlbum) || $oAlbum->user_id != Zend_Auth::getInstance()->getIdentity()->id)
@@ -86,11 +72,7 @@ class AlbumController extends Zend_Controller_Action
 
     public function deleteAction()
     {
-        if (!Zend_Auth::getInstance()->hasIdentity())
-        {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status"  => "warning"));
-            $this->_helper->_redirector->setGotoRoute(array(), 'login');
-        }
+        $oUser = $this->_checkIdentity();
         $oAlbum = Doctrine_Core::getTable('Album')->find($this->getRequest()->getParam("album_id"));
         if (empty($oAlbum) || $oAlbum->user_id != Zend_Auth::getInstance()->getIdentity()->id)
         {

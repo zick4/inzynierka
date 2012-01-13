@@ -1,16 +1,13 @@
 <?php
 
-class PhotoController extends Zend_Controller_Action
+class PhotoController extends App_Controller
 {
+    /**
+     * Usuwanie obrazka
+     */
     public function deleteAction()
     {
-        // uzytkownik musi być zalogowany
-        if (!Zend_Auth::getInstance()->hasIdentity())
-        {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status" => "warning"));
-            $this->_helper->_redirector->setGotoRoute(array(), 'login');
-        }
-        $oUser = Zend_Auth::getInstance()->getIdentity();
+        $oUser = $this->_getIdentity();
         $iPhotoId = (int) $this->getRequest()->getParam("photo_id");
         $oPhoto = Doctrine_Core::getTable('Photo')->find($iPhotoId);
 
@@ -25,24 +22,106 @@ class PhotoController extends Zend_Controller_Action
         $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
     }
 
+    /**
+     * Obracanie w pionie
+     */
+    public function flipAction()
+    {
+        $oUser = $this->_getIdentity();
+        $iPhotoId = (int) $this->getRequest()->getParam("photo_id");
+        $oPhoto = Doctrine_Core::getTable('Photo')->find($iPhotoId);
+
+        // sprawdzenie uprawnień
+        if (empty($oPhoto) || $oPhoto->Album->user_id != $oUser->id)
+        {
+            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status" => "error"));
+            $this->_helper->_redirector->setGotoRoute(array(), 'profil');
+        }
+
+        $oPhoto->flip();
+        $oPhoto->makeMiniature();
+        $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
+    }
+
+    /**
+     * Obracanie w poziomie
+     */
+    public function flopAction()
+    {
+        $oUser = $this->_getIdentity();
+        $iPhotoId = (int) $this->getRequest()->getParam("photo_id");
+        $oPhoto = Doctrine_Core::getTable('Photo')->find($iPhotoId);
+
+        // sprawdzenie uprawnień
+        if (empty($oPhoto) || $oPhoto->Album->user_id != $oUser->id)
+        {
+            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status" => "error"));
+            $this->_helper->_redirector->setGotoRoute(array(), 'profil');
+        }
+
+        $oPhoto->flop();
+        $oPhoto->makeMiniature();
+        $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
+    }
+
+    /**
+     * Rysunek węglem
+     */
+    public function charcoalAction()
+    {
+        $oUser = $this->_getIdentity();
+        $iPhotoId = (int) $this->getRequest()->getParam("photo_id");
+        $oPhoto = Doctrine_Core::getTable('Photo')->find($iPhotoId);
+
+        // sprawdzenie uprawnień
+        if (empty($oPhoto) || $oPhoto->Album->user_id != $oUser->id)
+        {
+            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status" => "error"));
+            $this->_helper->_redirector->setGotoRoute(array(), 'profil');
+        }
+
+        $oPhoto->charcoal();
+        $oPhoto->makeMiniature();
+        $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
+    }
+
+    /**
+     * Rozmycie farbą olejną
+     */
+    public function oilpaintAction()
+    {
+        $oUser = $this->_getIdentity();
+        $iPhotoId = (int) $this->getRequest()->getParam("photo_id");
+        $oPhoto = Doctrine_Core::getTable('Photo')->find($iPhotoId);
+
+        // sprawdzenie uprawnień
+        if (empty($oPhoto) || $oPhoto->Album->user_id != $oUser->id)
+        {
+            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status" => "error"));
+            $this->_helper->_redirector->setGotoRoute(array(), 'profil');
+        }
+
+        $oPhoto->oilPaint();
+        $oPhoto->makeMiniature();
+        $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
+    }
+
+    /**
+     * Dodawanie obrazka do albumu
+     */
     public function addAction()
     {
-        // uzytkownik musi być zalogowany
-        if (!Zend_Auth::getInstance()->hasIdentity())
-        {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Musisz być zalogowany, by przegladać tę część", "status" => "warning"));
-            $this->_helper->_redirector->setGotoRoute(array(), 'login');
-        }
-        $oUser = Zend_Auth::getInstance()->getIdentity();
+        $oUser = $this->_getIdentity();
         $iAlbumId = (int) $this->getRequest()->getParam("album_id");
         $oAlbum = Doctrine_Core::getTable('Album')->find($iAlbumId);
-
+       
         // sprawdzenie uprawnień
         if (empty($oAlbum) || $oAlbum->user_id != $oUser->id)
         {
             $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status" => "error"));
             $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
         }
+
         $oConfig = Zend_Registry::get('config_forms');
         $oForm = new Zend_Form($oConfig->photo);
         $oRequest = $this->getRequest();

@@ -14,6 +14,18 @@ $(document).ready( function() {
     <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_delete') ?>" title="Usuń obrazek">
         <img  alt="Usuń obrazek" src="">
     </a>
+    <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_flip') ?>">
+        flip
+    </a>
+    <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_flop') ?>">
+        flop
+    </a>
+    <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_charcoal') ?>">
+        charcoal
+    </a>
+    <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_oil_paint') ?>">
+        oil paint
+    </a>
     <?php endforeach ?>
 <?php else: ?>
     Pusty album
