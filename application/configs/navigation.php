@@ -2,27 +2,29 @@
 
 return array(
     array(
-        'label'     => 'Logowanie',
-        'route'     => 'login',
-        'resource'  => 'user',
+        'label' => 'Logowanie',
+        'description' => 'Zaloguj się by wykorzystać wszystkie możliwości serwisu',
+        'route' => 'login',
+        'resource' => 'user',
         'privilege' => 'login',
     ),
     array(
-        'label'     => 'Konto',
-        'route'     => 'profil',
-        'resource'  => 'user',
+        'label' => 'Konto',
+        'description' => '',
+        'route' => 'profil',
+        'resource' => 'user',
         'privilege' => 'account',
-        'pages'     => array(
+        'pages' => array(
             array(
-                'label'     => 'Rejestracja',
-                'route'     => 'registration',
-                'resource'  => 'user',
+                'label' => 'Rejestracja',
+                'route' => 'registration',
+                'resource' => 'user',
                 'privilege' => 'registration',
             ),
             array(
-                'label'     => 'Wylogowanie',
-                'route'     => 'logout',
-                'resource'  => 'user',
+                'label' => 'Wylogowanie',
+                'route' => 'logout',
+                'resource' => 'user',
                 'privilege' => 'logout',
             ),
         )
@@ -30,14 +32,15 @@ return array(
     array(
         'label' => 'Albumy',
         'route' => 'album_list',
-        'resource'     => 'album',
-        'privilege'    => 'list',
+        'description' => 'Zarządzaj sowimi albumami i zdjęciami',
+        'resource' => 'album',
+        'privilege' => 'link in menu',
         'pages' => array(
             array(
-                'label'        => 'Dodaj album',
-                'route'        => 'album_add',
-                'resource'     => 'album',
-                'privilege'    => 'add',
+                'label' => 'Dodaj album',
+                'route' => 'album_add',
+                'resource' => 'album',
+                'privilege' => 'add',
                 'reset_params' => false
             ),
         )

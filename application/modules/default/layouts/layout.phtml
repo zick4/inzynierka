@@ -1,5 +1,5 @@
-<?php echo $this->doctype() ?>
-<html>
+<!DOCTYPE html>
+<html lang="cs">
     <head>
         <?php echo $this->headMeta() ?>
         <?php echo $this->headTitle() ?>
@@ -8,36 +8,86 @@
         <?php echo $this->headScript() ?>
         <?php echo $this->headStyle() ?>
     </head>
-    <style>
-        #main-menu a {
-            color: white;
-        }
-    </style>
     <body>
-        <?php echo $this->loggedInAs() ?>
-        <h1>Layout defaultowy  </h1>
-        <div id="main-menu" style="background-color: blue; color: white;">
-            <?php echo $this->navigation()->menu()->setMaxDepth(1) ?>
+        <header>
+            <?php //echo $this->loggedInAs() ?>
+            <div class="wrap">
+                <div id="header">
+                    <a id="logo" href="/" title="imGGreat">imGGreat</a>
+                    <hr>
+                    <nav>
+                        <?php echo $this->navigation()->menuTop() ?>
+                    </nav>
+                </div>  
+                <hr>
+                <div id="intro">
+                    <h1>imGGreat</h1>
+                    <h2>Tysiące zdjęć w jednym miejscu!</h2>
+                    <p>Wrzucaj swoje ulubione zdjęcia i dziel się nimi z przyjaciółmi.</p>
+                    <a href="./" class="button" title="Dowiedz się więcej..."><span>Dowiedz się więcej...</span></a>
+                    <div id="macbook">
+                        <img src="/images/tmp/screen.png" alt="Screen">
+                    </div>
+                </div> 
+                <hr>
+                <div id="subIntro">
+                    <div class="floatLeft">
+                        <h2>Dołącz do największej społeczności pasjonatów fotografii.</h2>
+                        <p class="large">Dolore magna aliquam erat volutpat.</p>
+                    </div>
+                    <a href="<?php echo $this->url(array(), 'registration', true) ?>" class="button floatRight" title="Rejestracja"><span><?php echo ucfirst($this->translate("join now")) ?>!</span></a>
+                </div>  
+
+            </div>
+        </header>
+        <hr>
+        <div id="container">
+            <div id="content" class="wrap">
+                <?php echo $this->layout()->content; ?>
+            </div>
             <div class="clear"></div>
+        </div>  
+        <hr>
+        <div id="twitterBar">
+            <div class="wrap">
+                <span class="icon"></span>
+                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. <a href="./">http://www.google.com</a> <small>2 hours ago</small></p>
+            </div>
         </div>
-
-
-<!--        <div id="sub-menu" class="left" style="background-color: red; color: white;">
-            <?php echo $this->navigation()->menu()->renderSubMenu() ?>
-        </div>-->
-        <div id="content" class="left">
-            <?php echo $this->layout()->content; ?>
-        </div>
-        <div class="clear"></div>
-<!--        <div id="breadcrumbs">
-            <?php
-            echo $this->navigation()->breadcrumbs()
-                    ->setMinDepth(0)
-                    ->setSeparator(' &raquo; ')
-            ?>
-        </div>-->
-
-
+        <footer>
+            <div id="footer">
+                <div class="wrap clearFix">
+                    <div class="col1-4">
+                        <a href="./" id="footerLogo">imGGreat</a>
+                        <p class="light">&copy; 2012 imGGreat.</p>
+                        <p>Photos: <a href="http://pdphoto.org/">PDPhoto</a></p>
+                        <p>Tip: <a href="http://www.grilykrby.cz/">Grily</a></p>
+                    </div>
+                    <div class="col1-4">
+                        <h3>About us</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</p>
+                    </div>
+                    <div class="col1-4">
+                        <h3>Follow us</h3>
+                        <p class="followUs clearFix">
+                            <a href="./" class="facebook">Facebook</a>
+                            <a href="./" class="twitter">Twitter</a>
+                            <a href="./" class="rss">RSS</a>
+                            <a href="./" class="linkedin">LinkedIn</a>
+                            <a href="./" class="vimeo">Vimeo</a>
+                            <a href="./" class="digg">Digg</a>
+                            <a href="./" class="delicious">Delicious</a>
+                        </p>
+                    </div>
+                    <div class="col1-4">
+                        <h3>Stay udpated</h3>
+                        <form action="" method="post">
+                            <fieldset><input type="text" class="text" value="Your e-mail"><input type="submit" class="submit" value="Subscribe"></fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </footer>
         <?php echo $this->partial('_messenger.phtml') ?>
     </body>
 </html>

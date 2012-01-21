@@ -1,34 +1,40 @@
 <script type="text/javascript">
 $(document).ready( function() {
-	$('#galery a.photo').lightBox();
+	$('.gallery a.photo').lightBox();
 });
 </script>
-<h1>Zawartość albumu</h1>
-<div id="galery">
+<h2>Zawartość albumu</h2>
+<div class="gallery clearFix">
 
 <?php if (!empty($this->Album->Photos[0]->id)): ?>
     <?php foreach ($this->Album->Photos as $oPhoto): ?>
-    <a class="photo" href="<?php echo $oPhoto->Album->getDir().$oPhoto->getPhotoFileName() ?>" title="<?php echo $this->escape($oPhoto->description) ?>">
-        <img alt="<?php echo $this->escape($oPhoto->description) ?>" src="<?php echo $oPhoto->Album->getDir().$oPhoto->getPhotoMinFileName() ?>">
-    </a>
-    <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_delete') ?>" title="Usuń obrazek">
-        <img  alt="Usuń obrazek" src="">
-    </a>
-    <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_flip') ?>">
-        flip
-    </a>
-    <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_flop') ?>">
-        flop
-    </a>
-    <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_charcoal') ?>">
-        charcoal
-    </a>
-    <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_oil_paint') ?>">
-        oil paint
-    </a>
+    <div>
+        <a class="photo" href="<?php echo $oPhoto->Album->getDir().$oPhoto->getPhotoFileName() ?>" title="<?php echo $this->escape($oPhoto->description) ?>">
+            <img alt="<?php echo $this->escape($oPhoto->description) ?>" src="<?php echo $oPhoto->Album->getDir().$oPhoto->getPhotoMinFileName() ?>">
+        </a>
+        <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_delete') ?>" title="<?php echo $this->translate("delete image") ?>">
+            <?php echo $this->translate("delete image") ?>
+        </a>
+        <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_flip') ?>" title="<?php echo $this->translate("flip") ?>">
+            <?php echo $this->translate("flip") ?>
+        </a>
+        <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_flop') ?>" title="<?php echo $this->translate("flop") ?>">
+            <?php echo $this->translate("flop") ?>
+        </a>
+        <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_charcoal') ?>" title="<?php echo $this->translate("charcoal") ?>">
+            <?php echo $this->translate("charcoal") ?>
+        </a>
+        <a href="<?php echo $this->url(array('photo_id'=>$oPhoto->id), 'photo_oil_paint') ?>" title="<?php echo $this->translate("oil paint") ?>">
+            <?php echo $this->translate("oil paint") ?>
+        </a>
+    </div>
     <?php endforeach ?>
 <?php else: ?>
-    Pusty album
+    <?php echo ucfirst($this->translate("empty album")) ?>
 <?php endif ?>
 </div>
-<a href="<?php echo $this->url(array('album_id'=>$this->Album->id), 'photo_add', true) ?>">dodaj zdjęcie</a>
+<div class="add_img">
+<a class="button" href="<?php echo $this->url(array('album_id'=>$this->Album->id), 'photo_add', true) ?>">
+    <span><?php echo ucfirst($this->translate("add image")) ?></span>
+</a>
+</div>
