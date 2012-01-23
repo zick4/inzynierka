@@ -40,6 +40,29 @@ class Photo extends Base_Photo
         $oImage->writeImage($this->getPath().$this->getPhotoFileName());
         $oImage->destroy();
     }
+
+    /**
+     * Koordynaty
+     *
+     * x - współrzędna x
+     * y - współrzędna y
+     * width - szerokość
+     * height - wysokość
+     *
+     * @param array $aParams
+     */
+    public function crop(array $aParams)
+    {
+        if (empty($aParams['width']) || empty($aParams['height']) || empty($aParams['x']) || empty($aParams['y']))
+        {
+            throw new InvalidArgumentException("Tablica niezawiera odpowiednich danych");
+        }
+        $oImage = new Gmagick();
+        $oImage->readImage($this->getPath().$this->getPhotoFileName());
+        $oImage->cropimage($aParams['width'], $aParams['height'], $aParams['x'], $aParams['y']);
+        $oImage->writeImage($this->getPath().$this->getPhotoFileName());
+        $oImage->destroy();
+    }
     
     public function charcoal()
     {

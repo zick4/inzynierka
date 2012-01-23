@@ -1,0 +1,15 @@
+<script type="text/javascript">
+    $(document).ready( function() {
+        $('#cropping').imgAreaSelect({
+            handles: true,
+            onSelectEnd: function(img, selection){
+                $('#x').val(selection.x1);
+                $('#y').val(selection.y1);
+                $('#width').val(selection.width);
+                $('#height').val(selection.height);
+            }
+        });
+    });
+</script>
+<img id="cropping" alt="<?php echo $this->escape($this->oPhoto->description) ?>" src="<?php echo $this->oPhoto->Album->getDir() . $this->oPhoto->getPhotoFileName() ?>">
+<?php echo $this->oForm ?>

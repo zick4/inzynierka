@@ -22,6 +22,41 @@ class PhotoController extends App_Controller
         $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
     }
 
+    public function croppingAction()
+    {
+        $oUser = $this->_getIdentity();
+        $iPhotoId = (int) $this->getRequest()->getParam("photo_id");
+        $oPhoto = Doctrine_Core::getTable('Photo')->find($iPhotoId);
+
+        // sprawdzenie uprawnień
+        if (empty($oPhoto) || $oPhoto->Album->user_id != $oUser->id)
+        {
+            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status" => "error"));
+            $this->_helper->_redirector->setGotoRoute(array(), 'profil');
+        }
+        $oConfig = Zend_Registry::get('config_forms');
+        $oForm = new Zend_Form($oConfig->photo_cropping);
+        $oRequest = $this->getRequest();
+
+        if ($oRequest->isPost())
+        {
+            if ($oForm->isValid($oRequest->getPost()))
+            {
+                try {
+                    $oPhoto->crop($oForm->getValues());
+                    $oPhoto->makeMiniature();
+                    $this->_helper->flashMessenger->addMessage(array("message" => "Operacja zakończona!", "status" => "ok"));
+                }
+                catch (Exception $e) {
+                    $this->_helper->flashMessenger->addMessage(array("message" => $e->getMessage(), "status" => "error"));
+                }
+                $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
+            }
+
+        }
+        $this->view->oForm = $oForm;
+        $this->view->oPhoto = $oPhoto;
+    }
     /**
      * Obracanie w pionie
      */
@@ -40,6 +75,7 @@ class PhotoController extends App_Controller
 
         $oPhoto->flip();
         $oPhoto->makeMiniature();
+        $this->_helper->flashMessenger->addMessage(array("message" => "Operacja zakończona!", "status" => "ok"));
         $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
     }
 
@@ -61,6 +97,7 @@ class PhotoController extends App_Controller
 
         $oPhoto->flop();
         $oPhoto->makeMiniature();
+        $this->_helper->flashMessenger->addMessage(array("message" => "Operacja zakończona!", "status" => "ok"));
         $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
     }
 
@@ -82,6 +119,7 @@ class PhotoController extends App_Controller
 
         $oPhoto->charcoal();
         $oPhoto->makeMiniature();
+        $this->_helper->flashMessenger->addMessage(array("message" => "Operacja zakończona!", "status" => "ok"));
         $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
     }
 
@@ -103,6 +141,7 @@ class PhotoController extends App_Controller
 
         $oPhoto->oilPaint();
         $oPhoto->makeMiniature();
+        $this->_helper->flashMessenger->addMessage(array("message" => "Operacja zakończona!", "status" => "ok"));
         $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
     }
 

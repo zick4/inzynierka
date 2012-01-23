@@ -6,6 +6,7 @@ return array(
     'flop' => 'przekręć w poziomie',
     'charcoal' => 'szkic węglem',
     'oil paint' => 'obraz olejny',
+    'cropping' => 'kadrowanie',
     'empty album' => 'pusty album',
     'add image' => 'dodaj obrazek',
     'join now'=>'przyłącz się już teraz',

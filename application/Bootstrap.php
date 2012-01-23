@@ -85,12 +85,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view->headScript()->appendFile("/jquery/js/jquery.lightbox-0.5.js", 'text/javascript');
         $view->headScript()->appendFile("/jquery/js/jquery.mousewheel-3.0.4.pack.js", 'text/javascript');
         $view->headScript()->appendFile("/jquery/js/jquery.fancybox-1.3.4.pack.js", 'text/javascript');
+        $view->headScript()->appendFile("/jquery/js/jquery.imgareaselect.pack.js", 'text/javascript');
 //        $view->headScript()->appendFile("/jquery/js/custom.js", 'text/javascript');
         $view->headLink()->headLink(array('rel' => 'favicon', 'href' => '/favicon.ico'));
 
         $view->headLink()->appendStylesheet($view->baseUrl("/css/reset.css"), "screen");
         $view->headLink()->appendStylesheet($view->baseUrl("http://fonts.googleapis.com/css?family=Lato:400,700,900,400italic,700italic,900italic"), "screen");
         $view->headLink()->appendStylesheet($view->baseUrl("/jquery/css/ui.notify.css"), "screen");
+        $view->headLink()->appendStylesheet($view->baseUrl("/jquery/css/imgareaselect-default.css"), "screen");
         $view->headLink()->appendStylesheet($view->baseUrl("/jquery/css/jquery.lightbox-0.5.css"), "screen");
         $view->headLink()->appendStylesheet($view->baseUrl("/jquery/css/jquery.fancybox-1.3.4.css"), "screen");
         $view->headLink()->appendStylesheet($view->baseUrl("/css/main.css"), "screen");
