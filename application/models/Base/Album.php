@@ -8,6 +8,7 @@
  * @property integer $id
  * @property integer $user_id
  * @property string $name
+ * @property boolean $is_shared
  * @property User $User
  * @property Doctrine_Collection $Photos
  * 
@@ -33,6 +34,11 @@ abstract class Base_Album extends Doctrine_Record
         $this->hasColumn('name', 'string', null, array(
              'type' => 'string',
              'notnull' => true,
+             ));
+        $this->hasColumn('is_shared', 'boolean', null, array(
+             'type' => 'boolean',
+             'notnull' => true,
+             'default' => false,
              ));
 
         $this->option('type', 'INNODB');

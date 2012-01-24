@@ -1,24 +1,49 @@
 <h2><?php echo ucfirst($this->translate("list album")) ?></h2>
 <?php if (!empty($this->oUser->Albums[0])): ?>
-<table>
-    <tr><th>Id</th><th><?php echo ucfirst($this->translate("name"))  ?></th><th><?php echo ucfirst($this->translate("action"))  ?></th></tr>
-    <?php foreach ($this->oUser->Albums as $oAlbum): ?>
-    <tr>
-        <td><?php echo (int)$oAlbum->id ?></td>
-        <td><a href="<?php echo $this->url(array('album_id'=>(int)$oAlbum->id), 'album_show') ?>"><?php echo $this->escape($oAlbum->name) ?></a></td>
-        <td>
-            <a href="<?php echo $this->url(array('album_id'=>(int)$oAlbum->id), 'album_edit') ?>">
-                <img src="/images/ico/edit.png" alt="Edycja" />
-            </a>
-            <a href="<?php echo $this->url(array('album_id'=>(int)$oAlbum->id), 'album_delete') ?>">
-                <img src="/images/ico/del.gif" alt="Usuwanie" />
-            </a>
-        </td>
-    </tr>
-    <?php endforeach ?>
-</table>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th><?php echo ucfirst($this->translate("name")) ?></th>
+            <th><?php echo ucfirst($this->translate("is shared ?")) ?></th>
+            <th><?php echo ucfirst($this->translate("action")) ?></th>
+        </tr>
+        <?php foreach ($this->oUser->Albums as $oAlbum): ?>
+            <tr>
+                <td><?php echo (int) $oAlbum->id ?></td>
+                <td><a href="<?php echo $this->url(array('album_id' => (int) $oAlbum->id), 'album_show') ?>"><?php echo $this->escape($oAlbum->name) ?></a></td>
+                <td>
+                    <?php if ($oAlbum->is_shared): ?>
+                        <?php echo ucfirst($this->translate("yes")) ?>
+                        <?php $sAlbumUrl = 'http://' . $_SERVER['HTTP_HOST'] . $this->url(array('album_id' => (int) $oAlbum->id), 'album_public') ?>
+                        <a href="<?php echo $sAlbumUrl ?>">
+                            <?php echo $sAlbumUrl ?>
+                        </a>
+                    <?php else: ?>
+                        <?php echo ucfirst($this->translate("no")) ?>
+                    <?php endif ?>
+                </td>
+                <td>
+                    <a href="<?php echo $this->url(array('album_id' => (int) $oAlbum->id), 'album_edit') ?>" title="<?php echo ucfirst($this->translate("edit")) ?>">
+                        <img src="/images/ico/edit.png" alt="<?php echo ucfirst($this->translate("edit")) ?>" />
+                    </a>
+                    <a href="<?php echo $this->url(array('album_id' => (int) $oAlbum->id), 'album_delete') ?>" title="<?php echo ucfirst($this->translate("delete")) ?>">
+                        <img src="/images/ico/del.gif" alt="<?php echo ucfirst($this->translate("delete")) ?>" />
+                    </a>
+                    <?php if ($oAlbum->is_shared == false): ?>
+                        <a href="<?php echo $this->url(array('album_id' => (int) $oAlbum->id), 'album_share') ?>" title="<?php echo ucfirst($this->translate("share")) ?>">
+                            <img src="/images/ico/share.png" alt="<?php echo ucfirst($this->translate("share")) ?>" />
+                        </a>
+                    <?php else: ?>
+                        <a href="<?php echo $this->url(array('album_id' => (int) $oAlbum->id), 'album_hide') ?>" title="<?php echo ucfirst($this->translate("hide")) ?>">
+                            <img src="/images/ico/hide.gif" alt="<?php echo ucfirst($this->translate("hide")) ?>" />
+                        </a>
+                    <?php endif ?>
+                </td>
+            </tr>
+        <?php endforeach ?>
+    </table>
 <?php else: ?>
-    <?php echo ucfirst($this->translate("you dont't have any album"))  ?>
+    <?php echo ucfirst($this->translate("you dont't have any album")) ?>
 <?php endif ?>
 <a class="button" href="<?php echo $this->url(array(), 'album_add') ?>">
     <span><?php echo ucfirst($this->translate("add album")) ?></span>

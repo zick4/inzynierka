@@ -1,6 +1,8 @@
 <?php
 
 return array(
+    'yes'=>'tak',
+    'no'=>'nie',
     'delete image' => 'usuń obrazek',
     'flip' => 'przekręć w pionie',
     'flop' => 'przekręć w poziomie',
@@ -13,9 +15,14 @@ return array(
     'add image'=>'dodawanie obrazka',
     'add album'=>'dodawanie albumu',
     'list album'=>'lista albumów',
+    'hide'=>'ukryj',
     'edit album'=>'edycja albumu',
     'name'=>'nazwa',
     'action'=>'akcja',
+    'edit'=>'edycja',
+    'delete'=>'usuwanie',
+    'share'=>'udostępnianie',
+    'is shared ?'=>'jest udostępnione ?',
     'registration'=>'rejestracja',
     'you dont\'t have any album'=>'nie posiadasz żadnego albumu',
     'login to use all possibilities of service'=>'zaloguj się, by wykorzystać wszystkie możliwości serwisu',

@@ -10,7 +10,7 @@ class AlbumController extends App_Controller
 
     public function listAction()
     {
-        $oUser = $this->_checkIdentity();
+        $this->_checkIdentity();
         $iUserId = $this->getRequest()->getParam("user_id");
         if ($iUserId)
         {
@@ -19,6 +19,55 @@ class AlbumController extends App_Controller
         $oUser = Zend_Auth::getInstance()->getIdentity();
 
         $this->view->oUser = $oUser;
+    }
+
+    /**
+     * Wyświetlanie udostępnionego albumu
+     */
+    public function publicAction()
+    {
+        $oAlbum = Doctrine_Core::getTable('Album')->find($this->getRequest()->getParam("album_id"));
+        if (empty($oAlbum) || $oAlbum->is_shared == false)
+        {
+            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status"  => "error"));
+            $this->_helper->_redirector->setGotoRoute(array(), 'main_page');
+        }
+        $this->view->Album = $oAlbum;
+        
+    }
+    /**
+     * Udostępnianie albumów dla wszystkich
+     */
+    public function shareAction()
+    {
+        $this->_checkIdentity();
+        $oAlbum = Doctrine_Core::getTable('Album')->find($this->getRequest()->getParam("album_id"));
+        if (empty($oAlbum) || $oAlbum->user_id != Zend_Auth::getInstance()->getIdentity()->id)
+        {
+            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status"  => "error"));
+            $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
+        }
+        $oAlbum->is_shared = true;
+        $oAlbum->save();
+        $this->_helper->flashMessenger->addMessage(array("message" => "Album został udostępniony wszystkim", "status"  => "ok"));
+        $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
+    }
+    /**
+     * Ukrywanie albumów
+     */
+    public function hideAction()
+    {
+        $this->_checkIdentity();
+        $oAlbum = Doctrine_Core::getTable('Album')->find($this->getRequest()->getParam("album_id"));
+        if (empty($oAlbum) || $oAlbum->user_id != Zend_Auth::getInstance()->getIdentity()->id)
+        {
+            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status"  => "error"));
+            $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
+        }
+        $oAlbum->is_shared = false;
+        $oAlbum->save();
+        $this->_helper->flashMessenger->addMessage(array("message" => "Album został ukryty", "status"  => "ok"));
+        $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
     }
 
     public function addAction()
@@ -43,7 +92,7 @@ class AlbumController extends App_Controller
 
     public function editAction()
     {
-        $oUser = $this->_checkIdentity();
+        $this->_checkIdentity();
         $oForm  = new Zend_Form(Zend_Registry::get('config_forms')->album);
         $oAlbum = Doctrine_Core::getTable('Album')->find($this->getRequest()->getParam("album_id"));
         if (empty($oAlbum) || $oAlbum->user_id != Zend_Auth::getInstance()->getIdentity()->id)
@@ -72,7 +121,7 @@ class AlbumController extends App_Controller
 
     public function deleteAction()
     {
-        $oUser = $this->_checkIdentity();
+        $this->_checkIdentity();
         $oAlbum = Doctrine_Core::getTable('Album')->find($this->getRequest()->getParam("album_id"));
         if (empty($oAlbum) || $oAlbum->user_id != Zend_Auth::getInstance()->getIdentity()->id)
         {

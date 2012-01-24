@@ -1,0 +1,21 @@
+<script type="text/javascript">
+$(document).ready( function() {
+	$('.gallery a.photo').lightBox();
+});
+</script>
+<h2>Zawartość udostępnionego albumu</h2>
+<div class="gallery clearFix">
+
+<?php if (!empty($this->Album->Photos[0]->id)): ?>
+    <?php foreach ($this->Album->Photos as $oPhoto): ?>
+    <div>
+        <a class="photo" href="<?php echo $oPhoto->Album->getDir().$oPhoto->getPhotoFileName() ?>" title="<?php echo $this->escape($oPhoto->description) ?>">
+            <img alt="<?php echo $this->escape($oPhoto->description) ?>" src="<?php echo $oPhoto->Album->getDir().$oPhoto->getPhotoMinFileName() ?>">
+        </a>
+        
+    </div>
+    <?php endforeach ?>
+<?php else: ?>
+    <?php echo ucfirst($this->translate("empty album")) ?>
+<?php endif ?>
+</div>

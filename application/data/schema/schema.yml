@@ -39,6 +39,10 @@ Album:
     name:
       type: string
       notnull: true
+    is_shared:
+      type: boolean
+      notnull: true
+      default: false
   relations:
     User:
       local: user_id
