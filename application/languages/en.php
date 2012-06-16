@@ -1,21 +1,32 @@
 <?php
 
 return array(
+    'yes'=>'yes',
+    'no'=>'no',
     'delete image' => 'delete image',
     'flip' => 'flip',
     'flop' => 'flop',
     'charcoal' => 'charcoal',
     'oil paint' => 'oil paint',
+    'cropping' => 'cropping',
     'empty album' => 'empty album',
     'add image' => 'add image',
     'join now'=>'join now',
     'add image'=>'add image',
     'add album'=>'add album',
     'list album'=>'list album',
+    'hide'=>'hide',
     'edit album'=>'edit album',
+    'content of album'=>'content of album',
     'name'=>'name',
     'action'=>'action',
+    'edit'=>'edycja',
+    'delete'=>'usuwanie',
+    'share'=>'udostępnianie',
+    'is shared?'=>'is shared?',
     'registration'=>'registration',
     'you dont\'t have any album'=>'you dont\'t have any album',
+    'login to use all possibilities of service'=>'login to use all possibilities of service',
+    'manage yout albums and images'=>'manage yout albums and images',
 
 );

@@ -3,7 +3,7 @@ $(document).ready( function() {
 	$('.gallery a.photo').lightBox();
 });
 </script>
-<h2>Zawartość albumu</h2>
+<h2><?php echo ucfirst($this->translate("content of album")) ?> <a href="#"><?php echo $this->escape($this->Album->name) ?></a></h2>
 <div class="gallery clearFix">
 
 <?php if (!empty($this->Album->Photos[0]->id)): ?>
@@ -39,5 +39,8 @@ $(document).ready( function() {
 <div class="add_img">
 <a class="button" href="<?php echo $this->url(array('album_id'=>$this->Album->id), 'photo_add', true) ?>">
     <span><?php echo ucfirst($this->translate("add image")) ?></span>
+</a>
+<a  class="button" href="<?php echo $this->url(array('album_id'=>$this->Album->id), 'album_list', true) ?>">
+    <span><?php echo ucfirst($this->translate("list album")) ?></span>
 </a>
 </div>
