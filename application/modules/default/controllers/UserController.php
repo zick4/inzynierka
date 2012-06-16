@@ -16,29 +16,27 @@ class UserController extends App_Controller
         $oConfig = Zend_Registry::get('config_forms');
         $oForm = new Zend_Form($oConfig->login);
         $oRequest = $this->getRequest();
-        if ($oRequest->isPost())
+        if ($oRequest->isPost() && $oForm->isValid($oRequest->getPost()))
         {
-            if ($oForm->isValid($oRequest->getPost()))
-            {
-                $aValues = $oForm->getValues();
-                $oAdapter = new App_Auth();
-                $oAdapter->setCredential(User::getHashedPassword($aValues['password']));
-                $oAdapter->setIdentity($aValues['email']);
+            $aValues = $oForm->getValues();
+            $oAdapter = new App_Auth();
+            $oAdapter->setCredential(User::getHashedPassword($aValues['password']));
+            $oAdapter->setIdentity($aValues['email']);
 
-                $auth = Zend_Auth::getInstance();
-                $result = $auth->authenticate($oAdapter);
-                if ($result->isValid())
+            $auth = Zend_Auth::getInstance();
+            $result = $auth->authenticate($oAdapter);
+            if ($result->isValid())
+            {
+                $this->_helper->flashMessenger->addMessage(array("message" => "Witaj!", "status" => "ok"));
+                $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
+                return;
+            }
+            else
+            {
+                $mErrors = $result->getMessages();
+                foreach ($mErrors as $sError)
                 {
-                    $this->_helper->flashMessenger->addMessage(array("message" => "Witaj!", "status" => "ok"));
-                    $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
-                }
-                else
-                {
-                    $mErrors = $result->getMessages();
-                    foreach ($mErrors as $sError)
-                    {
-                        $this->_helper->flashMessenger->addMessage(array("message" => $sError, "status" => "error"));
-                    }
+                    $this->_helper->flashMessenger->addMessage(array("message" => $sError, "status" => "error"));
                 }
             }
         }
@@ -74,7 +72,10 @@ class UserController extends App_Controller
             $this->_helper->flashMessenger->addMessage(array("message" => "Rejestracja zakończona powodzeniem", "status" => "ok"));
             $this->_helper->redirector('profil');
         }
-        $this->view->oForm = $oForm;
+        else
+        {
+            $this->view->oForm = $oForm;
+        }
     }
 
 }

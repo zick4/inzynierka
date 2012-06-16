@@ -32,8 +32,10 @@ class AlbumController extends App_Controller
             $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status"  => "error"));
             $this->_helper->_redirector->setGotoRoute(array(), 'main_page');
         }
-        $this->view->Album = $oAlbum;
-        
+        else
+        {
+            $this->view->Album = $oAlbum;
+        }
     }
     /**
      * Udostępnianie albumów dla wszystkich
@@ -45,11 +47,13 @@ class AlbumController extends App_Controller
         if (empty($oAlbum) || $oAlbum->user_id != Zend_Auth::getInstance()->getIdentity()->id)
         {
             $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status"  => "error"));
-            $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
         }
-        $oAlbum->is_shared = true;
-        $oAlbum->save();
-        $this->_helper->flashMessenger->addMessage(array("message" => "Album został udostępniony wszystkim", "status"  => "ok"));
+        else
+        {
+            $oAlbum->is_shared = true;
+            $oAlbum->save();
+            $this->_helper->flashMessenger->addMessage(array("message" => "Album został udostępniony wszystkim", "status"  => "ok"));
+        }
         $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
     }
     /**
@@ -62,11 +66,13 @@ class AlbumController extends App_Controller
         if (empty($oAlbum) || $oAlbum->user_id != Zend_Auth::getInstance()->getIdentity()->id)
         {
             $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status"  => "error"));
-            $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
         }
-        $oAlbum->is_shared = false;
-        $oAlbum->save();
-        $this->_helper->flashMessenger->addMessage(array("message" => "Album został ukryty", "status"  => "ok"));
+        else
+        {
+            $oAlbum->is_shared = false;
+            $oAlbum->save();
+            $this->_helper->flashMessenger->addMessage(array("message" => "Album został ukryty", "status"  => "ok"));
+        }
         $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
     }
 
@@ -76,18 +82,18 @@ class AlbumController extends App_Controller
         $oConfig  = Zend_Registry::get('config_forms');
         $oForm    = new Zend_Form($oConfig->album);
         $oRequest = $this->getRequest();
-        if ($oRequest->isPost())
+        if ($oRequest->isPost() && $oForm->isValid($oRequest->getPost()))
         {
-            if ($oForm->isValid($oRequest->getPost()))
-            {
-                $aValues = $oForm->getValues();
-                $oUser->Albums[]->name = $aValues['name'];
-                $oUser->save();
-                $this->_helper->flashMessenger->addMessage(array("message" => "Album został dodany", "status"  => "ok"));
-                $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
-            }
+            $aValues = $oForm->getValues();
+            $oUser->Albums[]->name = $aValues['name'];
+            $oUser->save();
+            $this->_helper->flashMessenger->addMessage(array("message" => "Album został dodany", "status"  => "ok"));
+            $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
         }
-        $this->view->oForm = $oForm;
+        else
+        {
+            $this->view->oForm = $oForm;
+        }
     }
 
     public function editAction()
