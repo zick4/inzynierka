@@ -31,12 +31,17 @@
                 </div> 
                 <hr>
                 <div id="subIntro">
+                <?php if(!Zend_Auth::getInstance()->hasIdentity()): ?>
                     <div class="floatLeft">
                         <h2>Dołącz do największej społeczności pasjonatów fotografii.</h2>
-                        <p class="large">Dolore magna aliquam erat volutpat.</p>
-                    </div>
+                        <p class="large">
+                            Najpiękniejsze wspomnienia to te spędzone z najbliższymi. 
+                        </p>
+                    </div> 
                     <a href="<?php echo $this->url(array(), 'registration', true) ?>" class="button floatRight" title="Rejestracja"><span><?php echo ucfirst($this->translate("join now")) ?>!</span></a>
-                </div>  
+                <?php endif ?>
+                </div>
+                <div class="clear"></div>
 
             </div>
         </header>
@@ -51,7 +56,6 @@
         <div id="twitterBar">
             <div class="wrap">
                 <span class="icon"></span>
-                <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. <a href="./">http://www.google.com</a> <small>2 hours ago</small></p>
             </div>
         </div>
         <footer>
@@ -60,12 +64,15 @@
                     <div class="col1-4">
                         <a href="./" id="footerLogo">imGGreat</a>
                         <p class="light">&copy; 2012 imGGreat.</p>
-                        <p>Photos: <a href="http://pdphoto.org/">PDPhoto</a></p>
-                        <p>Tip: <a href="http://www.grilykrby.cz/">Grily</a></p>
                     </div>
                     <div class="col1-4">
                         <h3>About us</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud.</p>
+                        <p>
+                           Najprężniej rozwijający się serwis społeczniościowy w Polsce, dla którego 
+                           najważniejsi od zawsze byli użytkownicy. 
+                           2013 roku uruchomiliśmy serwis byś mógł cieszyć nieskrępnowanymi możliwościami
+                           dzielania najważniejszymi zdjęciami.
+                        </p>
                     </div>
                     <div class="col1-4">
                         <h3>Follow us</h3>
@@ -80,10 +87,7 @@
                         </p>
                     </div>
                     <div class="col1-4">
-                        <h3>Stay udpated</h3>
-                        <form action="" method="post">
-                            <fieldset><input type="text" class="text" value="Your e-mail"><input type="submit" class="submit" value="Subscribe"></fieldset>
-                        </form>
+                        <h3>Politechnika Warszawska WEITI</h3>
                     </div>
                 </div>
             </div>

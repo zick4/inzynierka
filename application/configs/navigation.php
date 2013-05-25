@@ -9,6 +9,12 @@ return array(
         'privilege' => 'login',
     ),
     array(
+        'label' => 'Wylogowanie',
+        'route' => 'logout',
+        'resource' => 'user',
+        'privilege' => 'logout',
+    ),
+    array(
         'label' => 'Konto',
         'description' => '',
         'route' => 'profil',

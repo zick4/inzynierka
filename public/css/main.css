@@ -56,7 +56,7 @@ input.submit:hover {color: #000}
 #intro #macbook img {position: relative;top: 20px;left:89px}
 #intro h2 {font-size: 1.2em;text-shadow: 0 0 0;color: #afadae}
 #intro p {color: #dddddd;margin-bottom: 20px}
-#subIntro {height: 70px;position: relative;padding: 33px 0 7px 0;position: relative}
+#subIntro {padding: 33px 0 7px 0;}
 #subIntro h2 {color: #000;font-size: 1.4em;font-weight: normal;margin-bottom: 0}
 #subIntro p {font-size: 1.1em}
 #subIntro .button {position: relative;top: 5px;right: 60px !important}
@@ -129,4 +129,12 @@ a.photo:hover img {border-color: #d1d1d1}
 .add_img {margin-top: 20px;}
 
 .clear {clear: both;}
+
+
+table {
+    width: 100%;
+    text-align: center;
+    padding: 10px 5px;
+    margin-bottom: 20px
+}
 

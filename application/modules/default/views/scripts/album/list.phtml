@@ -43,8 +43,10 @@
         <?php endforeach ?>
     </table>
 <?php else: ?>
-    <?php echo ucfirst($this->translate("you dont't have any album")) ?>
+    <p><?php echo ucfirst($this->translate("you dont't have any album")) ?></p>
 <?php endif ?>
-<a class="button" href="<?php echo $this->url(array(), 'album_add') ?>">
-    <span><?php echo ucfirst($this->translate("add album")) ?></span>
-</a>
+<div>
+    <a class="button" href="<?php echo $this->url(array(), 'album_add') ?>">
+        <span><?php echo ucfirst($this->translate("add album")) ?></span>
+    </a>
+</div>

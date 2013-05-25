@@ -70,7 +70,15 @@ class UserController extends App_Controller
             $oUser->birthday = $aValues['birthday'];
             $oUser->save();
             $this->_helper->flashMessenger->addMessage(array("message" => "Rejestracja zakończona powodzeniem", "status" => "ok"));
-            $this->_helper->redirector('profil');
+            $oAdapter = new App_Auth();
+            $oAdapter->setCredential(User::getHashedPassword($aValues['password']));
+            $oAdapter->setIdentity($aValues['email']);
+
+            $auth = Zend_Auth::getInstance();
+            $result = $auth->authenticate($oAdapter);
+            
+            $this->_helper->redirector('album');
+            
         }
         else
         {
