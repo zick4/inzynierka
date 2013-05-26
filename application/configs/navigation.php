@@ -38,7 +38,7 @@ return array(
     array(
         'label' => 'Albumy',
         'route' => 'album_list',
-        'description' => 'Zarządzaj sowimi albumami i zdjęciami',
+        'description' => 'Zarządzaj swoimi albumami i zdjęciami',
         'resource' => 'album',
         'privilege' => 'link in menu',
         'pages' => array(
