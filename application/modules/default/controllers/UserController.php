@@ -6,6 +6,43 @@ class UserController extends App_Controller
     public function profilAction()
     {
         $this->_checkIdentity();
+        $iUserId = $this->getRequest()->getParam("user_id");
+        if ($iUserId)
+        {
+            $oUser = Doctrine_Core::getTable('User')->find($iUserId);
+        }
+        else
+        {
+            $oUser = Zend_Auth::getInstance()->getIdentity();
+        }
+        $this->view->oUser = $oUser;
+        
+        $oConfig = Zend_Registry::get('config_forms');
+        $this->view->oForm = new Zend_Form($oConfig->profil);
+        $oRequest = $this->getRequest();
+        if ($oRequest->isPost())
+        {
+            if ($this->view->oForm->isValid($oRequest->getPost()))
+            {
+                $aValues = $this->view->oForm->getValues();
+                $oUser = new User();
+                $oUser->password = $aValues['password'];
+                $oUser->birthday = $aValues['birthday'];
+                $oUser->save();
+                $this->_helper->flashMessenger->addMessage(array(
+                    "message" => "Profil został zaktualizowany", 
+                    "status" => "ok"
+                ));
+            }
+            else
+            {
+                $this->_helper->flashMessenger->addMessage(array(
+                    "message" => "Wystąpiły błedy przy aktualizowaniu formularza", 
+                    "status" => "error"
+                ));
+            }
+        }
+        
     }
 
     /**
@@ -77,7 +114,7 @@ class UserController extends App_Controller
             $auth = Zend_Auth::getInstance();
             $result = $auth->authenticate($oAdapter);
             
-            $this->_helper->redirector('album');
+            $this->_helper->redirector->gotoSimple('profil', 'user');
             
         }
         else

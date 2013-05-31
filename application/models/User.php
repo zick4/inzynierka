@@ -12,7 +12,7 @@
  */
 class User extends Base_User
 {
-    private static $_salt = "ag26";
+    private static $_salt = "%^&amp;*(#@$@K:JKBJVCHKB@QRU)+{KMF  er23";
     public function save(Doctrine_Connection $conn = null)
     {
         // Tworzenie nowego użytkownika

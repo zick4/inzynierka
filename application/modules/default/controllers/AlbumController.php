@@ -16,8 +16,10 @@ class AlbumController extends App_Controller
         {
             $oUser = Doctrine_Core::getTable('User')->find($iUserId);
         }
-        $oUser = Zend_Auth::getInstance()->getIdentity();
-
+        else
+        {
+            $oUser = Zend_Auth::getInstance()->getIdentity();
+        }
         $this->view->oUser = $oUser;
     }
 
