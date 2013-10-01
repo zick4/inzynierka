@@ -35,6 +35,7 @@ h4 {font-size: 1.0em;}
 input.text {background: #232323;border: 1px solid #454547;padding: 10px 5px;border-radius: 4px;width: 210px;color: #e0e0e0;font-style: italic;margin-bottom: 10px}
 input.submit {width: 108px;height: 31px;background: url('/images/ico/submit-subscribe.png') no-repeat;border: 0;font-size: 1.0em;font-weight: bold;color: #660100;text-shadow: 1px 1px 1px #fb3752;font-family: Arial;cursor: pointer}
 input.submit:hover {color: #000}
+.errors {color: red;}
 
 /*******************************************************************************************************************
 *  HEADER
