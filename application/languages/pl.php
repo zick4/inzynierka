@@ -31,4 +31,6 @@ return array(
     Zend_Validate_NotEmpty::IS_EMPTY            => 'Pole jest wymagane',
     Zend_Validate_NotEmpty::INVALID             => 'Nieprawidłowy typ. Możliwe typy to: string, integer, float, boolean lub array',
     Zend_Validate_EmailAddress::INVALID_FORMAT  => "'%value%' nie jest prawidłowym adresem email",
+    Zend_Validate_File_Upload::NO_FILE          => "Nie wczytano pliku",
+    Zend_Validate_File_Count::TOO_FEW           => "Za mało plików, minimum '%min%' natomiast '%count%' otrzymanobng",
 );
