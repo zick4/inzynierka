@@ -27,27 +27,7 @@
             "type": "pear",
             "url": "pear.php.net",
             "vendor-alias": "pear"
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "zend/zendframework",
-                "version" : "1.12.3",
-                "source": {
-                    "url": "http://framework.zend.com/svn/framework/standard",
-                    "type": "svn",
-                    "reference": "tags/release-1.12.3/"
-                },
-                "autoload": {
-                    "psr-0": {
-                        "Zend": "library",
-                        "ZendX" : "extras/library"
-                    }
-                },
-                "config": {
-                    "bin-dir": "bin"
-                }
-            }
         }
+
     ]
 }
