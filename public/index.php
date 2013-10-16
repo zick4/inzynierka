@@ -7,22 +7,20 @@ defined('APPLICATION_PATH')
 // Define application environment
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
-
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
     realpath(APPLICATION_PATH . '/../library'),
+    realpath(APPLICATION_PATH . '/../vendor/zend/zendframework/library'),
     APPLICATION_PATH . '/models' ,
     get_include_path()
 )));
+require_once realpath(APPLICATION_PATH . '/../vendor/autoload.php');
 define('USER_FILES_PUBLIC_DIR', "/users_files");
 define('PUBLIC_DIR', APPLICATION_PATH.'/../public');
 
 /** Zend_Application */
-require_once 'Zend/Loader/Autoloader.php';
-
 $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->setFallbackAutoloader(true);
-
 // Create application, bootstrap, and run
 $application = new Zend_Application(
     APPLICATION_ENV,

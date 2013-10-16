@@ -1,2 +1,4 @@
 .zfproject.xml
 log/application.log
+public/users_files
+/vendor/

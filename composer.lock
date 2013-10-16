@@ -1,0 +1,90 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "6d2913d8653216dacb23e2992e5414ed",
+    "packages": [
+        {
+            "name": "doctrine/doctrine1",
+            "version": "v1.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/doctrine1.git",
+                "reference": "88903e2d7d82852ec9b80ccbf02bd8e6fa2cbec6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/doctrine1/zipball/88903e2d7d82852ec9b80ccbf02bd8e6fa2cbec6",
+                "reference": "88903e2d7d82852ec9b80ccbf02bd8e6fa2cbec6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo": "*",
+                "php": ">=5.2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Doctrine_": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com",
+                    "homepage": "http://www.jwage.com/"
+                },
+                {
+                    "name": "Konsta Vesterinen",
+                    "email": "kvesteri@cc.hut.fi"
+                }
+            ],
+            "description": "PHP5 Database ORM",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "database",
+                "orm"
+            ],
+            "time": "2012-04-01 17:53:05"
+        },
+        {
+            "name": "zend/zendframework",
+            "version": "1.12.3",
+            "source": {
+                "type": "svn",
+                "url": "http://framework.zend.com/svn/framework/standard",
+                "reference": "tags/release-1.12.3/"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Zend": "library",
+                    "ZendX": "extras/library"
+                }
+            }
+        }
+    ],
+    "packages-dev": [
+
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "stable",
+    "stability-flags": [
+
+    ],
+    "platform": {
+        "php": ">=5.4.0",
+        "ext-mysql": "*",
+        "ext-gmagick": "*"
+    },
+    "platform-dev": [
+
+    ]
+}
