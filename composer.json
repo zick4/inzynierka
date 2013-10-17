@@ -14,8 +14,8 @@
         "php": ">=5.4.0",
         "ext-mysql": "*",
         "ext-gmagick": "*",
-        "zend/zendframework": "*",
-        "doctrine/doctrine1": "*"
+        "zend/zendframework": "1.12.*",
+        "doctrine/doctrine1": "1.*"
     },
     "require-dev": {
     },
@@ -28,6 +28,5 @@
             "url": "pear.php.net",
             "vendor-alias": "pear"
         }
-
     ]
 }
