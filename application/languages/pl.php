@@ -45,4 +45,7 @@ return array(
     Zend_Validate_StringLength::INVALID         => "Nierozpoznany typ. Spodziewano się napisu",
     Zend_Validate_StringLength::TOO_SHORT       => "'%value%' ma za mało znaków. Wymagane przynajmniej %min% znaków",
     Zend_Validate_StringLength::TOO_LONG        => "'%value%'ma za dużo znaków. Wymagane maksymalnie %max% znaków",
+    Zend_Validate_Date::INVALID                 => "Niepoprawny typ. Obsługiwane typy to: string, integer, array albo Zend_Date",
+    Zend_Validate_Date::INVALID_DATE            => "'%value%' nie jest poprawną datą",
+    Zend_Validate_Date::FALSEFORMAT             => "'%value%' nie pasuje do formatu '%format%'",
 );
