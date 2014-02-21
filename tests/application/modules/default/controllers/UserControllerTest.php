@@ -31,16 +31,17 @@ class UserControllerTest extends ControllerTestCase
     public function testLoginSuccessful()
     {
         $mockMessenger = $this->getFlashMessenger();
-        $mockMessenger->expects($this->once())
-                      ->method('addMessage')
-                      ->with(array("message" => "Witaj!", "status" => "ok"));
+        $mockMessenger
+            ->expects($this->once())
+            ->method('addMessage')
+            ->with(array("message" => "Witaj!", "status" => "ok"));
         Zend_Controller_Action_HelperBroker::addHelper($mockMessenger);
 
         $this->request->setMethod('POST')
-              ->setPost(array(
-                  'email' => 'zick4@wp.pl',
-                  'password' => 'kogut41',
-              ));
+        ->setPost(array(
+            'email' => 'zick4@wp.pl',
+            'password' => 'kogut41',
+        ));
         $this->dispatch('/user/login');
         $this->assertRedirectTo('/album/list');
 
@@ -49,10 +50,10 @@ class UserControllerTest extends ControllerTestCase
     public function testLoginFailure()
     {
         $this->request->setMethod('POST')
-              ->setPost(array(
-                  'username' => 'dasdasd.pl',
-                  'password' => 'dasd'
-              ));
+            ->setPost(array(
+                'username' => 'dasdasd.pl',
+                'password' => 'dasd'
+            ));
         $this->dispatch('/user/login');
         $this->assertNotRedirect();
         $this->assertRoute('login');
@@ -90,12 +91,13 @@ class UserControllerTest extends ControllerTestCase
     public function testProfileUpdateSuccessful()
     {
         $mockMessenger = $this->getFlashMessenger();
-        $mockMessenger->expects($this->once())
-                      ->method('addMessage')
-                      ->with(array(
-                          "message" => "Profil został zaktualizowany",
-                          "status" => "ok"
-                      ));
+        $mockMessenger
+            ->expects($this->once())
+            ->method('addMessage')
+            ->with(array(
+                "message" => "Profil został zaktualizowany",
+                "status" => "ok"
+            ));
         Zend_Controller_Action_HelperBroker::addHelper($mockMessenger);
 
         $this->request->setMethod('POST')
@@ -115,12 +117,13 @@ class UserControllerTest extends ControllerTestCase
     {
 
         $mockMessenger = $this->getFlashMessenger();
-        $mockMessenger->expects($this->once())
-                      ->method('addMessage')
-                      ->with(array(
-                          "message" => "Wystąpiły błedy przy aktualizowaniu formularza",
-                          "status" => "error"
-                      ));
+        $mockMessenger
+            ->expects($this->once())
+            ->method('addMessage')
+            ->with(array(
+                "message" => "Wystąpiły błedy przy aktualizowaniu formularza",
+                "status" => "error"
+            ));
         Zend_Controller_Action_HelperBroker::addHelper($mockMessenger);
 
 

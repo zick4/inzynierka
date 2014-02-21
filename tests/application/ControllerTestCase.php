@@ -17,11 +17,13 @@ class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
 
     protected function getFlashMessenger()
     {
-        return $this->getMock('Zend_Controller_Action_Helper_FlashMessenger',
-                                        array('addMessage'),
-                                        array(),
-                                        'NewAction'.self::$i++.'_Test_FlashMessenger',
-                                        false);
+        return $this->getMock(
+            'Zend_Controller_Action_Helper_FlashMessenger',
+            array('addMessage'),
+            array(),
+            'NewAction'.self::$i++.'_Test_FlashMessenger',
+            false
+        );
     }
 
     public function appBootstrap()
