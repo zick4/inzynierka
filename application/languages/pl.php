@@ -8,6 +8,7 @@ return array(
     'flop'                                      => 'przekręć w poziomie',
     'charcoal'                                  => 'szkic węglem',
     'oil paint'                                 => 'obraz olejny',
+    'profile'                                   => 'profil',
     'cropping'                                  => 'kadrowanie',
     'empty album'                               => 'pusty album',
     'add image'                                 => 'dodaj obrazek',

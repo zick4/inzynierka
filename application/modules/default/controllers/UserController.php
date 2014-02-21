@@ -3,7 +3,7 @@
 class UserController extends App_Controller
 {
 
-    public function profilAction()
+    public function profileAction()
     {
         $this->_checkIdentity();
         $iUserId = $this->getRequest()->getParam("user_id");
@@ -18,7 +18,7 @@ class UserController extends App_Controller
         $this->view->oUser = $oUser;
         
         $oConfig = Zend_Registry::get('config_forms');
-        $this->view->oForm = new Zend_Form($oConfig->profil);
+        $this->view->oForm = new Zend_Form($oConfig->profile);
         $oRequest = $this->getRequest();
         if ($oRequest->isPost())
         {
@@ -97,6 +97,7 @@ class UserController extends App_Controller
     {
         $oConfig = Zend_Registry::get('config_forms');
         $oForm = new Zend_Form($oConfig->register);
+        
         if ($this->getRequest()->isPost() && $oForm->isValid($this->getRequest()->getParams()))
         {
             $aValues = $oForm->getValues();
@@ -112,9 +113,9 @@ class UserController extends App_Controller
             $oAdapter->setIdentity($aValues['email']);
 
             $auth = Zend_Auth::getInstance();
-            $result = $auth->authenticate($oAdapter);
+            $auth->authenticate($oAdapter);
             
-            $this->_helper->redirector->gotoSimple('profil', 'user');
+            $this->_helper->redirector->gotoSimple('profile', 'user');
             
         }
         else

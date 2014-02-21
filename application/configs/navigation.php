@@ -17,7 +17,7 @@ return array(
     array(
         'label' => 'Konto',
         'description' => '',
-        'route' => 'profil',
+        'route' => 'profile',
         'resource' => 'user',
         'privilege' => 'account',
         'pages' => array(

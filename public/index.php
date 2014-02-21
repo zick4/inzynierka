@@ -1,5 +1,6 @@
 <?php
 
+
 // Define path to application directory
 defined('APPLICATION_PATH')
     || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
@@ -7,6 +8,7 @@ defined('APPLICATION_PATH')
 // Define application environment
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
+
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
     realpath(APPLICATION_PATH . '/../library'),
@@ -14,6 +16,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
     APPLICATION_PATH . '/models' ,
     get_include_path()
 )));
+
 require_once realpath(APPLICATION_PATH . '/../vendor/autoload.php');
 define('USER_FILES_PUBLIC_DIR', "/users_files");
 define('PUBLIC_DIR', APPLICATION_PATH.'/../public');

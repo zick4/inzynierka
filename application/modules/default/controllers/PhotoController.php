@@ -15,7 +15,7 @@ class PhotoController extends App_Controller
         if (empty($oPhoto) || $oPhoto->Album->user_id != $oUser->id)
         {
             $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki obrazek, lub nie masz odpowiednich uprawnień", "status" => "error"));
-            $this->_helper->_redirector->setGotoRoute(array(), 'profil');
+            $this->_helper->_redirector->setGotoRoute(array(), 'profile');
         }
         else
         {
@@ -35,7 +35,7 @@ class PhotoController extends App_Controller
         if (empty($oPhoto) || $oPhoto->Album->user_id != $oUser->id)
         {
             $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki obrazek, lub nie masz odpowiednich uprawnień", "status" => "error"));
-            $this->_helper->_redirector->setGotoRoute(array(), 'profil');
+            $this->_helper->_redirector->setGotoRoute(array(), 'profile');
         }
         else
         {
@@ -76,7 +76,7 @@ class PhotoController extends App_Controller
         if (empty($oPhoto) || $oPhoto->Album->user_id != $oUser->id)
         {
             $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki obrazek, lub nie masz odpowiednich uprawnień", "status" => "error"));
-            $this->_helper->_redirector->setGotoRoute(array(), 'profil');
+            $this->_helper->_redirector->setGotoRoute(array(), 'profile');
         }
         else
         {
@@ -100,7 +100,7 @@ class PhotoController extends App_Controller
         if (empty($oPhoto) || $oPhoto->Album->user_id != $oUser->id)
         {
             $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki obrazek, lub nie masz odpowiednich uprawnień", "status" => "error"));
-            $this->_helper->_redirector->setGotoRoute(array(), 'profil');
+            $this->_helper->_redirector->setGotoRoute(array(), 'profile');
         }
         else
         {
@@ -124,7 +124,7 @@ class PhotoController extends App_Controller
         if (empty($oPhoto) || $oPhoto->Album->user_id != $oUser->id)
         {
             $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki obrazek, lub nie masz odpowiednich uprawnień", "status" => "error"));
-            $this->_helper->_redirector->setGotoRoute(array(), 'profil');
+            $this->_helper->_redirector->setGotoRoute(array(), 'profile');
         }
         else
         {
@@ -148,7 +148,7 @@ class PhotoController extends App_Controller
         if (empty($oPhoto) || $oPhoto->Album->user_id != $oUser->id)
         {
             $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki obrazek, lub nie masz odpowiednich uprawnień", "status" => "error"));
-            $this->_helper->_redirector->setGotoRoute(array(), 'profil');
+            $this->_helper->_redirector->setGotoRoute(array(), 'profile');
         }
         else
         {

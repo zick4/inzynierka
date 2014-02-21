@@ -1,11 +1,16 @@
-<phpunit bootstrap="./application/bootstrap.php" colors="true"
-convertErrorsToExceptions="false"
-convertNoticesToExceptions="false"
-convertWarningsToExceptions="false"
-stopOnFailure="false">
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
+<phpunit
+    bootstrap="./application/bootstrap.php" colors="true"
+    convertErrorsToExceptions="false"
+    convertNoticesToExceptions="false"
+    convertWarningsToExceptions="false"
+    stopOnFailure="false">
+
     <testsuite name="MyApp">
-        <directory>./</directory>
+        <directory suffix="Test.php">./</directory>
     </testsuite>
+
     <filter>
         <whitelist>
             <directory suffix=".php">../application/</directory>
@@ -17,10 +22,4 @@ stopOnFailure="false">
         </whitelist>
     </filter>
 
-
-    <logging>
-        <log type="coverage-html" target="./log/report" charset="UTF-8"
-            yui="true" highlight="true" lowUpperBound="50" highLowerBound="80"/>
-        <log type="testdox-html" target="./log/testdox.html" />
-    </logging>
 </phpunit>

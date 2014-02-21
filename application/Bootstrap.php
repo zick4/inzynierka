@@ -54,12 +54,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $locale = Zend_Registry::get('Zend_Locale');
 
         // Set up and load the translations (there are my custom translations for my app)
-        $translate = new Zend_Translate(
-                        array(
-                            'adapter' => 'array',
-                            'content' => APPLICATION_PATH . '/languages/' . $locale . '.php',
-                            'locale' => $locale)
-        );
+        $translate = new Zend_Translate(array(
+            'adapter' => 'array',
+            'content' => APPLICATION_PATH . '/languages/' . $locale . '.php',
+            'locale' => $locale
+        ));
 
         Zend_Form::setDefaultTranslator($translate);
 
