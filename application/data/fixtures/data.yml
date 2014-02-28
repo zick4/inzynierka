@@ -1,8 +1,12 @@
 Album:
   Album_1:
-    name: Focie z wakacji
+    name: Zdjęcia z wakacji
   Album_2:
-    name: Focie z gdańska
+    name: Zdjęcia z gdańska
+    is_shared: true
+  Album_3:
+    name: Samochody
+    is_shared: true
     
 User:
   User_1:
@@ -10,4 +14,9 @@ User:
     password: kogut41
     birthday: '1986-06-04'
     Albums: [Album_1, Album_2]
+  User_2:
+    email: zick5@wp.pl
+    password: kogut41
+    birthday: '1986-06-04'
+    Albums: [Album_3]
     

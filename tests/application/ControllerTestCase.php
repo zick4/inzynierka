@@ -34,6 +34,11 @@ class ControllerTestCase extends Zend_Test_PHPUnit_ControllerTestCase
         $front = $appBootstrap->getResource('FrontController');
         $front->setParam('bootstrap', $appBootstrap);
 
+        $cli = new Doctrine_Cli($this->application->getOption('doctrine'));
+        ob_start();
+        $cli->run(array("doctrine", 'build-all-reload', 'force'));
+        ob_clean();
+
     }
     protected function doLogin()
     {

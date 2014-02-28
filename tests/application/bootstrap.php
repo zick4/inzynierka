@@ -28,8 +28,4 @@ $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->setFallbackAutoloader(true);
 
 $application = new Zend_Application(APPLICATION_ENV, APPLICATION_PATH . '/configs/application.ini');
-$appBootstrap = $application->getBootstrap();
-$appBootstrap->bootstrap('doctrine');
-
-$cli = new Doctrine_Cli($application->getOption('doctrine'));
-$cli->run(array("doctrine", 'build-all-reload', 'force'));
+$application->getBootstrap()->bootstrap('doctrine');

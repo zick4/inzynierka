@@ -65,7 +65,7 @@ class UserController extends App_Controller
             if ($result->isValid())
             {
                 $this->_helper->flashMessenger->addMessage(array("message" => "Witaj!", "status" => "ok"));
-                $this->_helper->_redirector->setGotoRoute(array(), 'album_list');
+                $this->_helper->_redirector->setGotoRoute(array(), 'album_list', true);
                 return;
             }
             else
@@ -87,7 +87,7 @@ class UserController extends App_Controller
     {
         Zend_Auth::getInstance()->clearIdentity();
         $this->_helper->flashMessenger->addMessage(array("message" => "Wylogowałeś się z systemu", "status" => "ok"));
-        $this->_helper->_redirector->setGotoRoute(array(), 'login');
+        $this->_helper->_redirector->setGotoRoute(array(), 'login', true);
     }
 
     /**
@@ -115,7 +115,7 @@ class UserController extends App_Controller
             $auth = Zend_Auth::getInstance();
             $auth->authenticate($oAdapter);
             
-            $this->_helper->redirector->gotoSimple('profile', 'user');
+            $this->_helper->redirector->setGotoRoute(array(), 'profile', true);
             
         }
         else

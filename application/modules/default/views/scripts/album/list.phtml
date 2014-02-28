@@ -14,7 +14,7 @@
                 <td>
                     <?php if ($oAlbum->is_shared): ?>
                         <?php echo ucfirst($this->translate("yes")) ?>
-                        <?php $sAlbumUrl = 'http://' . $_SERVER['HTTP_HOST'] . $this->url(array('album_id' => (int) $oAlbum->id), 'album_public') ?>
+                        <?php $sAlbumUrl = $this->serverUrl() . $this->url(array('album_id' => (int) $oAlbum->id), 'album_public') ?>
                         <a href="<?php echo $sAlbumUrl ?>">
                             <?php echo $sAlbumUrl ?>
                         </a>
