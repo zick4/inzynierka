@@ -7,16 +7,19 @@ Album:
   Album_3:
     name: Samochody
     is_shared: true
+  Album_4:
+    name: Samoloty
+    is_shared: true
     
 User:
   User_1:
     email: zick4@wp.pl
     password: kogut41
     birthday: '1986-06-04'
-    Albums: [Album_1, Album_2]
+    Albums: [Album_1, Album_2, Album_3]
   User_2:
     email: zick5@wp.pl
     password: kogut41
     birthday: '1986-06-04'
-    Albums: [Album_3]
+    Albums: [Album_4]
     

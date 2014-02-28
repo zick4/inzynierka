@@ -1,6 +1,34 @@
 <?php
 class AlbumControllerTest extends ControllerTestCase
 {
+    public function testAddAlbumSuccessful()
+    {
+        $mockMessenger = $this->getFlashMessenger();
+        $mockMessenger
+            ->expects($this->once())
+            ->method('addMessage')
+            ->with(array("message" => "Album został‚ dodany", "status"  => "ok"));
+        Zend_Controller_Action_HelperBroker::addHelper($mockMessenger);
+
+        $this->request->setMethod('POST')
+             ->setPost(array(
+                  'name' => 'tmp'
+             ));
+        $this->doLogin();
+        $this->dispatch('/album/add');
+        $this->assertRedirectTo('/album/list');
+    }
+
+    public function testAddAlbumFailure()
+    {
+        $this->request->setMethod('POST')
+             ->setPost(array(
+             ));
+        $this->doLogin();
+        $this->dispatch('/album/add');
+        $this->assertNotRedirect();
+    }
+    
     public function testDeleteAlbumSuccessful()
     {
         $mockMessenger = $this->getFlashMessenger();
@@ -12,7 +40,7 @@ class AlbumControllerTest extends ControllerTestCase
 
         $this->request->setMethod('POST')
              ->setPost(array(
-                  'album_id' => 1
+                  'album_id' => 3
              ));
         $this->doLogin();
         $this->dispatch('/album/delete');
@@ -47,7 +75,7 @@ class AlbumControllerTest extends ControllerTestCase
 
         $this->request->setMethod('POST')
              ->setPost(array(
-                 "album_id" => 3
+                 "album_id" => 4
              ));
         $this->doLogin();
         $this->dispatch('/album/delete');
@@ -100,39 +128,11 @@ class AlbumControllerTest extends ControllerTestCase
 
         $this->request->setMethod('POST')
              ->setPost(array(
-                 'album_id' => 3
+                 'album_id' => 4
              ));
         $this->doLogin();
         $this->dispatch('/album/edit');
         $this->assertRedirectTo('/album/list');
-    }
-
-    public function testAddAlbumSuccessful()
-    {
-        $mockMessenger = $this->getFlashMessenger();
-        $mockMessenger
-            ->expects($this->once())
-            ->method('addMessage')
-            ->with(array("message" => "Album został‚ dodany", "status"  => "ok"));
-        Zend_Controller_Action_HelperBroker::addHelper($mockMessenger);
-
-        $this->request->setMethod('POST')
-             ->setPost(array(
-                  'name' => 'tmp'
-             ));
-        $this->doLogin();
-        $this->dispatch('/album/add');
-        $this->assertRedirectTo('/album/list');
-    }
-
-    public function testAddAlbumFailure()
-    {
-        $this->request->setMethod('POST')
-             ->setPost(array(
-             ));
-        $this->doLogin();
-        $this->dispatch('/album/add');
-        $this->assertNotRedirect();
     }
 
     public function testListOwnSuccessfull()

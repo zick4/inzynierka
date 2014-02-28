@@ -138,6 +138,7 @@ class AlbumController extends App_Controller
     {
         $oUser = $this->_getIdentity();
         $oAlbum = Doctrine_Core::getTable('Album')->find($this->getRequest()->getParam("album_id"));
+
         if (empty($oAlbum) || $oAlbum->user_id != $oUser->id)
         {
             $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status"  => "error"));
