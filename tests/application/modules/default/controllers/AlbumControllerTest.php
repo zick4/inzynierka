@@ -142,14 +142,14 @@ class AlbumControllerTest extends ControllerTestCase
         $this->assertNotRedirect();
     }
 
-    public function testListOtherSuccessfull()
+    public function testListOtherRedirectFailure()
     {
         $this->request->setMethod('GET')
              ->setParams(array(
                   'user_id' => 1,
              ));
         $this->dispatch('/album/list');
-        $this->assertNotRedirect();
+        $this->assertRedirectTo('/user/login');
     }
 
     public function testListFailure()
@@ -301,7 +301,7 @@ class AlbumControllerTest extends ControllerTestCase
         $mockMessenger
             ->expects($this->once())
             ->method('addMessage')
-            ->with(array('message' => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status"  => "error"));
+            ->with(array('message' => "Nie istnieje taki albumń", "status"  => "error"));
         Zend_Controller_Action_HelperBroker::addHelper($mockMessenger);
 
         $this->request->setMethod('GET')
@@ -312,13 +312,13 @@ class AlbumControllerTest extends ControllerTestCase
         $this->assertRedirectTo('/');
     }
 
-    public function testShowPrivateAlbumFailure()
+    public function testShowNoLogin()
     {
         $mockMessenger = $this->getFlashMessenger();
         $mockMessenger
             ->expects($this->once())
             ->method('addMessage')
-            ->with(array('message' => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status"  => "error"));
+            ->with(array('message' => "Musisz być zalogowany, by przegladać tę część", "status"  => "warning"));
         Zend_Controller_Action_HelperBroker::addHelper($mockMessenger);
 
         $this->request->setMethod('GET')
@@ -326,7 +326,7 @@ class AlbumControllerTest extends ControllerTestCase
                   'album_id' => 1,
              ));
         $this->dispatch('/album/show');
-        $this->assertRedirectTo('/');
+        $this->assertRedirectTo('/user/login');
     }
     
 

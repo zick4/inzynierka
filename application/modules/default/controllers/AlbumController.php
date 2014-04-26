@@ -8,18 +8,12 @@ class AlbumController extends App_Controller
         $this->_forward("list");
     }
 
+    /**
+     * Listować albumy może tylko zalogowany użytkownik
+     */
     public function listAction()
     {
-        $iUserId = $this->getRequest()->getParam("user_id");
-        
-        if ($iUserId)
-        {
-            $this->view->oUser = Doctrine_Core::getTable('User')->find($iUserId);
-        }
-        else
-        {
-            $oUser = $this->_getIdentity();
-        }
+        $this->view->oUser = $this->_getIdentity();
     }
 
     /**
@@ -152,20 +146,21 @@ class AlbumController extends App_Controller
     }
 
     /**
-     * Pokazywanie zawartości albumu
+     * Pokazywanie zawartości albumu TYLKO dla właściciela dla innych jest osobna akcja
      */
     public function showAction()
     {
         $oAlbum = Doctrine_Core::getTable('Album')->find($this->getRequest()->getParam("album_id"));
-        if (empty($oAlbum) ||  $oAlbum->is_shared == false)
+        if (empty($oAlbum))
         {
-            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki album, lub nie masz odpowiednich uprawnień", "status"  => "error"));
-            $this->_helper->_redirector-> gotoUrl("/");
+            $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki albumń", "status"  => "error"));
+            $this->_helper->_redirector->gotoUrl("/");
             return;
         }
         else
         {
-            $this->view->Album = Doctrine_Core::getTable('Album')->find($this->getRequest()->getParam("album_id"));
+            $oUser = $this->_getIdentity();
+            $this->view->Album = $oAlbum;
         }
     }
 

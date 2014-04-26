@@ -173,6 +173,7 @@ class PhotoController extends App_Controller
         {
             $this->_helper->flashMessenger->addMessage(array("message" => "Nie istnieje taki obrazek, lub nie masz odpowiednich uprawnień", "status" => "error"));
             $this->_helper->_redirector->setGotoRoute(array('album_id'=>$oPhoto->Album->id), 'album_show');
+            return;
         }
         else
         {
