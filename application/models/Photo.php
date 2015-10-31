@@ -55,7 +55,7 @@ class Photo extends Base_Photo
     {
         if (empty($aParams['width']) || empty($aParams['height']) || empty($aParams['x']) || empty($aParams['y']))
         {
-            throw new InvalidArgumentException("Tablica niezawiera odpowiednich danych");
+            throw new InvalidArgumentException("Tablica nie zawiera odpowiednich danych");
         }
         $oImage = new Gmagick();
         $oImage->readImage($this->getPath().$this->getPhotoFileName());
