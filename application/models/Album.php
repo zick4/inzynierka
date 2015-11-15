@@ -33,14 +33,14 @@ class Album extends Base_Album
      */
     public function getDir()
     {
-        return USER_FILES_PUBLIC_DIR.'/' . $this->User->id . '/' . $this->id . '/';
+        return USER_FILES_PUBLIC_DIR . '/' . $this->User->id . '/' . $this->id . '/';
     }
     
     private function _deleteDir()
     {
-        $dirName = PUBLIC_DIR.$this->getDir();
-        $dirHandle = opendir($dirName);
-        if ($dirHandle)
+        $dirName = PUBLIC_DIR.  $this->getDir();
+
+        if (file_exists($dirName) && ($dirHandle = opendir($dirName)))
         {
             while (false !== ($dirFile = readdir($dirHandle)))
             {

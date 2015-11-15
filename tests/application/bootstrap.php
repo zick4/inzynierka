@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL | E_STRICT);
+error_reporting(E_ALL ^ E_DEPRECATED);
 
 // Define path to application directory
 defined('APPLICATION_PATH')
