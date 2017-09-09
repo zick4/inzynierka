@@ -14,7 +14,7 @@
         "php": ">=5.4.0",
         "ext-mysql": "*",
         "ext-gmagick": "*",
-        "zend/zendframework": "1.12.*",
+        "zendframework/zendframework1": "1.12.*",
         "doctrine/doctrine1": "1.*"
     },
     "require-dev": {
